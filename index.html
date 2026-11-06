@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>AI Ordering – Store Monitor System</title>
+<style>
+:root{color-scheme:light;--ink:#172837;--muted:#526677;--line:#dbe4ea;--bg:#f3f6f8;--nav:#122532;--teal:#08766d;--teal-dark:#075c56;--mint:#e3f4ef;--white:#fff;--red:#a82b39;--radius:16px;font-family:system-ui,-apple-system,"Sukhumvit Set","Leelawadee UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55}
+button,input,textarea,select{font:inherit}
+button,summary,a,input[type=checkbox],input[type=radio],select{touch-action:manipulation}
+button,summary{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid #148aab;outline-offset:3px}
+::placeholder{color:#637687;opacity:1}
+svg.icon{width:20px;height:20px;flex:none;vertical-align:middle}
+.defs{position:absolute;width:0;height:0;overflow:hidden}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100dvh;background:var(--nav);color:#fff;padding:28px 18px 20px;display:flex;flex-direction:column;gap:34px}
+.brand{display:flex;gap:11px;align-items:center;padding:0 5px;min-width:0}
+.brand-icon{width:40px;height:40px;border-radius:12px;background:#85e8d1;color:#12332e;display:grid;place-items:center;flex:none}
+.brand strong{display:block;font-size:17px;line-height:1.25;letter-spacing:.01em}
+.brand small{color:#b3c5cd;font-size:11px;white-space:nowrap}
+.nav-label{margin:0 0 9px 11px;color:#b3c5cd;font-size:12px;font-weight:650}
+.nav{display:grid;gap:6px}
+.nav button{display:flex;align-items:center;gap:10px;text-align:left;min-height:46px;border:0;border-radius:9px;padding:9px 11px;background:transparent;color:#d7e4e9;font-size:14px;font-weight:650;white-space:nowrap}
+.nav button:hover,.nav button[aria-current=page]{background:#25434c;color:#a5f4df}
+.side-note{margin-top:auto;color:#bfced5;padding:16px 8px 0;border-top:1px solid #344956;font-size:12px}
+.side-note b{display:block;color:#e9f5f7;margin-bottom:4px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#85e8d1;margin-right:7px}
+.main{min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--line)}
+.topbar-inner,.page{max-width:1270px;margin:auto}
+.topbar-inner{padding:14px clamp(18px,4vw,46px);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.crumb{font-weight:750;font-size:14px;display:flex;gap:8px;align-items:center}
+.crumb .icon{color:var(--teal)}
+.page{padding:27px clamp(18px,4vw,46px) 30px}
+.hero{isolation:isolate;position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(110deg,#132f3d 25%,#075c58 100%);color:#fff;padding:28px 32px 30px;margin-bottom:16px}
+.hero-art{position:absolute;z-index:-1;width:345px;height:100%;right:0;top:0;opacity:.47;pointer-events:none}
+.kicker{color:#9be9d9;font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin:0 0 9px;display:flex;align-items:center;gap:9px}
+.kicker:before{content:"";display:block;width:18px;height:2px;background:#88e5d0}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(25px,3.35vw,38px);line-height:1.23;letter-spacing:-.025em}
+.hero p:last-child{margin-top:10px;color:#d7eeee;font-size:14px;max-width:490px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:25px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;display:flex;gap:12px;align-items:center;min-width:0}
+.stat .badge-icon{width:38px;height:38px}
+.badge-icon{flex:none;display:grid;place-items:center;border-radius:10px;background:var(--mint);color:var(--teal);width:43px;height:43px}
+.stat strong{font-size:23px;line-height:1.05;display:block;font-variant-numeric:tabular-nums}
+.stat span:last-child{font-size:12px;color:var(--muted)}
+.view-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+.view-title h2{font-size:22px;line-height:1.3}
+.view-title p{font-size:13px;color:var(--muted);margin-top:4px}
+.pill{border-radius:999px;background:var(--mint);color:#08625a;padding:4px 11px;font-weight:750;font-size:12px;white-space:nowrap}
+.pill.draft{background:#fff0d5;color:#7c4b00}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:15px;padding:21px 23px;box-shadow:0 2px 4px #182d3b05;min-width:0}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.card-head h3{font-size:19px;line-height:1.35}
+.card-head p,.hint{color:var(--muted);font-size:13px;margin-top:3px}
+.number{font-size:14px;font-weight:850;letter-spacing:.03em}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 17px;align-items:start}
+.wide{grid-column:1/-1}
+.field{display:grid;gap:5px;min-width:0}
+.field-label,legend{font-size:14px;font-weight:720}
+legend{padding:0;margin:0 0 7px}
+fieldset{border:0;padding:0;margin:0;min-inline-size:0}
+.req{color:var(--red)}
+input:not([type=checkbox]):not([type=radio]),textarea,select{width:100%;min-width:0;min-height:45px;border:1px solid #c7d4dd;border-radius:9px;padding:8px 11px;background:#fff;color:var(--ink)}
+input[type=date]{display:block}
+.visit-time{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px}
+input:disabled,select:disabled{background:#edf1f4;color:var(--muted)}
+textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
+.choices{display:flex;flex-wrap:wrap;gap:7px}
+.choice{display:flex;gap:7px;align-items:center;border:1px solid #cdd9e1;border-radius:9px;min-height:44px;padding:7px 10px;color:var(--ink);font-size:14px;cursor:pointer}
+.choice:has(input:checked){background:#e6f6f1;border-color:#63a99e;color:#095e54}
+.choice input,.pma-option input{accent-color:var(--teal);margin:0;width:16px;height:16px;flex:none}
+.choice span,.pma-option span{overflow-wrap:anywhere}
+.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:7px 13px;border:1px solid #c8d6df;border-radius:9px;background:#fff;color:var(--ink);font-weight:730;font-size:14px;line-height:1.3;text-align:center}
+.btn:hover{background:#f0f6f7}
+.btn:disabled{opacity:.54;cursor:default}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.primary:hover{background:var(--teal-dark)}
+.btn.danger{color:var(--red)}
+.btn .icon{width:17px;height:17px}
+.btn.icon-only{width:44px;padding:0}
+.pma-picker{border:1px solid #c7d4dd;border-radius:9px;background:#fff}
+.pma-picker summary{min-height:44px;padding:8px 11px;display:flex;gap:8px;align-items:center;list-style:none;font-size:14px;font-weight:690}
+.pma-picker summary::-webkit-details-marker{display:none}
+.pma-picker summary .chevron{width:16px;height:16px;margin-left:auto;transition:transform .12s}
+.pma-picker[open] summary .chevron{transform:rotate(180deg)}
+.pma-count{background:var(--mint);color:var(--teal-dark);font-size:12px;padding:1px 7px;border-radius:12px}
+.pma-body{padding:0 10px 10px}
+.pma-body input[type=search]{min-height:43px!important}
+.pma-list{max-height:238px;overflow:auto;margin-top:7px;overscroll-behavior:contain}
+.pma-option{display:flex;align-items:center;gap:8px;min-height:43px;padding:6px 8px;border-radius:7px;font-size:13px;cursor:pointer}
+.pma-option:hover,.pma-option:has(input:checked){background:#edf7f5}
+.pma-option b{min-width:27px;color:var(--teal-dark);font-variant-numeric:tabular-nums}
+.pma-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.pma-tags span{padding:2px 8px;border-radius:7px;background:#eef4f6;color:#315263;font-size:12px;overflow-wrap:anywhere}
+.adjust-item{background:#f6f9fa;border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px}
+.adjust-head{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:7px}
+.adjust-head strong{font-size:14px}
+.summary-box{background:#eff8f5;border:1px solid #cfe7df;border-radius:12px;padding:13px}
+.summary-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.summary-box textarea{min-height:200px}
+.actions{position:sticky;bottom:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:13px;padding:9px 12px;margin-bottom:12px;box-shadow:0 -3px 15px #21374610}
+.actions small{font-size:12px;color:var(--muted)}
+.action-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.notice{border:1px solid #efc7ca;background:#fff1f2;color:#841e29;border-radius:10px;padding:10px 13px;margin-bottom:14px;font-size:14px}
+.toast{position:fixed;right:18px;bottom:77px;z-index:5;background:#183743;color:#fff;padding:9px 15px;border-radius:10px;box-shadow:0 4px 14px #112b4b30;font-size:14px;max-width:calc(100vw - 36px)}
+.history-tools{display:flex;gap:8px;align-items:center;margin-bottom:13px}
+.history-tools input{max-width:390px}
+.record{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.record-main{min-width:0}
+.record-title{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px}
+.record-title strong{overflow-wrap:anywhere}
+.record p{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.record-buttons{display:flex;gap:6px}
+.empty{border:1px dashed #c3d3db;background:#f7fafb;text-align:center;border-radius:10px;padding:25px 12px;color:var(--muted)}
+.footer{text-align:center;font-size:12px;color:var(--muted);padding:5px 0}
+@media(max-width:1023px){
+  .layout{display:block}
+  .sidebar{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:11px clamp(16px,4vw,38px)}
+  .brand{padding:0}.side-note,.nav-label{display:none}.nav{display:flex}
+}
+@media(max-width:580px){
+  .sidebar{padding:10px 13px}.nav{gap:3px}.nav button{gap:5px;font-size:12px;padding:7px}.nav .icon{width:15px;height:15px}
+  .brand{gap:7px}.brand-icon{width:32px;height:32px;border-radius:8px}.brand-icon .icon{width:17px}.brand strong{font-size:13px}.brand small{font-size:9px}
+  .topbar-inner{padding:8px 13px}.crumb{font-size:12px;gap:5px}.crumb .icon{width:16px}.topbar .btn{font-size:12px}
+  .page{padding:15px 12px 22px}.hero{padding:21px 17px 23px;border-radius:15px}.hero-art{opacity:.23}
+  .stats{gap:6px;margin-bottom:19px}.stat{padding:9px 7px;gap:6px;align-items:flex-start}.stat .badge-icon{width:24px;height:25px;border-radius:7px}.stat .icon{width:14px;height:14px}.stat strong{font-size:18px}.stat span:last-child{font-size:10px;display:block;line-height:1.3;margin-top:3px}
+  .grid{grid-template-columns:minmax(0,1fr);gap:13px}.card{padding:15px 13px}.card-head h3{font-size:17px}.card-head{margin-bottom:14px}
+  .actions{position:static}.action-buttons{width:100%}.action-buttons .btn{flex:1}.toast{bottom:18px}
+  .record{grid-template-columns:minmax(0,1fr)}.record-buttons{justify-content:flex-end}
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="defs" aria-hidden="true">
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M3 5h3l2 10h10l3-7H7M10 19h.01M17 19h.01M12 11l2 2 3-3"/></symbol>
+<symbol id="i-form" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2m6 2V2m-6 8h6m-6 5h6"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 2.6 6.4M3 6v6h6m3-5v5l3 2"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></symbol>
+<symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 11v9h16v-9M3 11l2-6h14l2 6M3 11c0 3 4 3 4 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 4 3 4 0M10 20v-5h4v5"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8l9-5Zm0 10v8m-9-13 9 5 9-5M7.5 5.5l9 5"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h12l3 3v13H4V4h1Zm3 0v6h8V4M8 20v-6h8v6"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 16-1 5 5-1L20 8l-4-4L4 16Zm10-10 4 4"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 6h16M9 6V3h6v3m3 0-1 15H7L6 6m4 4v7m4-7v7"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="M4 11h10a5 5 0 0 1 0 10M4 11l5-5m-5 5 5 5"/></symbol>
+</svg>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon" data-icon="logo"></span>
+      <div><strong>AI Ordering</strong><small>Store Monitor System</small></div>
+    </div>
+    <div>
+      <p class="nav-label">เมนูการทำงาน</p>
+      <nav class="nav" aria-label="เมนูการทำงาน">
+        <button id="nav-form" type="button" aria-current="page"><span data-icon="form"></span> แบบฟอร์ม</button>
+        <button id="nav-history" type="button"><span data-icon="history"></span> ประวัติเข้าตรวจ</button>
+      </nav>
+    </div>
+    <div class="side-note"><b><span class="dot"></span>ใช้งานแบบออฟไลน์</b>ข้อมูลเก็บในเบราว์เซอร์บนอุปกรณ์นี้</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div class="topbar-inner">
+      <div class="crumb"><span data-icon="form"></span><span id="crumb">แบบฟอร์มเข้าตรวจ</span></div>
+      <button id="export" class="btn" type="button" title="ส่งออกทุกการเข้าตรวจ รวมฉบับร่าง" disabled><span data-icon="download"></span> ส่งออก Excel</button>
+    </div></header>
+    <div class="page">
+      <div class="hero">
+        <svg class="hero-art" viewBox="0 0 345 160" fill="none" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+          <defs><pattern id="hero-grid" width="23" height="23" patternUnits="userSpaceOnUse"><path d="M23 0H0v23" fill="none" stroke="#80e7d4" stroke-opacity=".45"/></pattern><linearGradient id="hero-fade"><stop stop-color="black"/><stop offset="1" stop-color="white"/></linearGradient><mask id="hero-mask"><rect width="345" height="160" fill="url(#hero-fade)"/></mask></defs>
+          <g mask="url(#hero-mask)"><rect width="345" height="160" fill="url(#hero-grid)"/><path d="M5 135h340M48 122l43-14 34 11 47-45 35 12 52-43 37 12 49-37" stroke="#b1fbe7" stroke-width="2"/><path d="M48 122l43-14 34 11 47-45 35 12 52-43 37 12 49-37v117H48Z" fill="#66e8cd" opacity=".15"/><g fill="#d7fff1"><circle cx="172" cy="74" r="3.5"/><circle cx="259" cy="43" r="3.5"/><circle cx="296" cy="55" r="3.5"/></g></g>
+        </svg>
+        <p class="kicker">AI ORDERING · FIELD MONITOR</p>
+        <h1>แบบบันทึกการเข้าตรวจร้าน</h1>
+        <p>สัมภาษณ์ผู้สั่งสินค้า บันทึกการแก้ยอด และรวบรวมข้อค้นพบจากการใช้ AI Ordering ที่สาขา</p>
+      </div>
+      <div class="stats" aria-label="ภาพรวมข้อมูลที่บันทึก">
+        <div class="stat"><span class="badge-icon" data-icon="form"></span><div><strong id="stat-visits">0</strong><span>รายการเข้าตรวจ</span></div></div>
+        <div class="stat"><span class="badge-icon" data-icon="shop"></span><div><strong id="stat-stores">0</strong><span>สาขาที่ตรวจ</span></div></div>
+        <div class="stat"><span class="badge-icon" data-icon="box"></span><div><strong id="stat-pmas">0</strong><span>PMA ที่ตรวจ</span></div></div>
+      </div>
+      <div id="notice" class="notice" role="alert" hidden></div>
+
+      <section id="form-view" aria-labelledby="form-heading">
+        <div class="view-title">
+          <div><h2 id="form-heading" tabindex="-1">บันทึกการเข้าตรวจใหม่</h2><p>กรอกช่องที่มี * ก่อนบันทึกรายการจริง</p></div>
+          <span id="form-state" class="pill">รายการใหม่</span>
+        </div>
+        <form id="visit-form" autocomplete="off">
+          <section class="card" aria-labelledby="store-heading">
+            <div class="card-head"><span class="badge-icon" data-icon="shop"></span><div><h3 id="store-heading">ข้อมูลร้านและผู้ให้ข้อมูล</h3><p>ข้อมูลสาขา วันที่เข้าตรวจ และการใช้งาน New Smart Assortment</p></div></div>
+            <div class="grid">
+              <label class="field"><span class="field-label">วันที่เข้าตรวจ <span class="req">*</span></span><input id="date" type="date" required></label>
+              <fieldset>
+                <legend>เวลาเข้าตรวจ <span class="req">*</span></legend>
+                <div class="visit-time">
+                  <select id="visit-hour" aria-label="ชั่วโมงที่เข้าตรวจ" required></select>
+                  <span aria-hidden="true">:</span>
+                  <select id="visit-minute" aria-label="นาทีที่เข้าตรวจ" required></select>
+                </div>
+                <p class="hint">เวลาแบบ 24 ชั่วโมง ตามเวลาท้องถิ่น</p>
+              </fieldset>
+              <label class="field"><span class="field-label">รหัสสาขา <span class="req">*</span></span><input id="store-id" maxlength="48" placeholder="เช่น 00123" required></label>
+              <label class="field"><span class="field-label">ชื่อสาขา <span class="req">*</span></span><input id="store-name" maxlength="180" placeholder="ชื่อร้านหรือชื่อสาขา" required></label>
+              <label class="field"><span class="field-label">โปรไฟล์ร้าน</span><select id="profile"></select></label>
+              <label class="field"><span class="field-label">ตำแหน่งผู้สั่งสินค้า</span><select id="role"></select></label>
+              <label class="field" id="profile-other-field" hidden><span class="field-label">ระบุโปรไฟล์ร้าน</span><input id="profile-other" maxlength="180"></label>
+              <label class="field" id="role-other-field" hidden><span class="field-label">ระบุตำแหน่งผู้สั่งสินค้า</span><input id="role-other" maxlength="180"></label>
+              <label class="field wide"><span class="field-label">ชื่อผู้เข้าตรวจ</span><input id="monitor" maxlength="160" placeholder="ชื่อผู้ Monitor"></label>
+              <fieldset class="wide"><legend>วันที่ขายดี <span class="hint">· เลือกได้หลายวัน</span></legend><div id="weekdays" class="choices"></div></fieldset>
+              <label class="field"><span class="field-label">ร้านใช้ New Smart Assortment หรือไม่</span><select id="smart"></select></label>
+              <label class="field"><span class="field-label">ความถี่ในการใช้ New Smart Assortment</span><select id="frequency" disabled></select><span class="hint" id="frequency-hint">เลือก “ใช้” เพื่อระบุความถี่</span></label>
+              <div class="field wide"><span class="field-label">PMA ที่ตรวจ <span class="hint">· เลือกได้หลายหมวด</span></span><div id="visit-pmas"></div></div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="ai-heading">
+            <div class="card-head"><span class="badge-icon number">01</span><div><h3 id="ai-heading">ความเหมาะสมของการสั่ง AI</h3><p>สอบถามผู้สั่งสินค้าว่ายอดที่ AI แนะนำสอดคล้องกับความต้องการของร้านหรือไม่</p></div></div>
+            <div class="grid">
+              <fieldset class="wide"><legend>ความเห็นของผู้สั่งสินค้า</legend><div id="fit" class="choices"></div></fieldset>
+              <label class="field wide"><span class="field-label">เหตุผลหรือข้อสังเกต</span><textarea id="fit-note" maxlength="2500" placeholder="เช่น ยอดที่แนะนำพอดีในวันปกติ แต่บางหมวดต้องปรับในช่วงโปรโมชัน"></textarea></label>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="adjust-heading">
+            <div class="card-head"><span class="badge-icon number">02</span><div><h3 id="adjust-heading">การแก้ไขยอดสั่งของร้าน</h3><p>แยกการเพิ่มและลดยอดเป็นคนละรายการเมื่อ PMA หรือเหตุผลต่างกัน</p></div></div>
+            <div class="grid">
+              <fieldset class="wide"><legend>พฤติกรรมการสั่ง</legend><div id="adjust-status" class="choices"></div></fieldset>
+              <div id="adjust-area" class="wide" hidden>
+                <div id="adjust-list"></div>
+                <button id="add-adjust" class="btn" type="button"><span data-icon="plus"></span> เพิ่มรายการแก้ยอด</button>
+              </div>
+              <label class="field wide"><span class="field-label">หมายเหตุการแก้ยอด</span><textarea id="adjust-note" maxlength="2500" placeholder="รายละเอียดหรือเงื่อนไขเพิ่มเติม"></textarea></label>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="factors-heading">
+            <div class="card-head"><span class="badge-icon number">03</span><div><h3 id="factors-heading">ปัจจัยหน้างาน</h3><p>ร้านใช้ปัจจัยอะไรเพิ่มเติมในการตัดสินใจสั่งสินค้า</p></div></div>
+            <div class="grid">
+              <fieldset class="wide"><legend>ปัจจัยที่ร้านพิจารณา <span class="hint">· เลือกได้หลายข้อ</span></legend><div id="factors" class="choices"></div></fieldset>
+              <label class="field wide"><span class="field-label">ปัจจัยอื่น ๆ หรือรายละเอียด</span><textarea id="factor-note" maxlength="2500" placeholder="เช่น โรงเรียนปิดเทอม หรือมีงานในพื้นที่ใกล้ร้าน"></textarea></label>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="issues-heading">
+            <div class="card-head"><span class="badge-icon number">04</span><div><h3 id="issues-heading">ปัญหาที่พบ</h3><p>บันทึกจากการสังเกตหรือข้อมูลที่ร้านแจ้งระหว่างเข้าตรวจ</p></div></div>
+            <div class="grid">
+              <fieldset class="wide"><legend>ประเภทปัญหา <span class="hint">· เลือกได้หลายข้อ</span></legend><div id="issues" class="choices"></div></fieldset>
+              <div class="field wide"><span class="field-label">PMA ที่พบปัญหา <span class="hint">· เลือกได้หลายหมวด</span></span><div id="issue-pmas"></div></div>
+              <label class="field wide"><span class="field-label">ปัญหาอื่น ๆ หรือรายละเอียด</span><textarea id="issue-note" maxlength="2500" placeholder="ระบุสิ่งที่พบ สินค้าที่เกี่ยวข้อง หรือผลกระทบที่ร้านแจ้ง"></textarea></label>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="summary-heading">
+            <div class="card-head"><span class="badge-icon number">05</span><div><h3 id="summary-heading">สรุปข้อค้นพบจากการ Monitor</h3><p>ระบบรวบรวมคำตอบในฟอร์มและเปิดให้แก้ไขหรือเพิ่มข้อค้นพบได้</p></div></div>
+            <div class="summary-box">
+              <div class="summary-head"><label class="field-label" for="summary">ข้อความสรุป</label><span id="summary-mode" class="pill">สรุปอัตโนมัติ</span></div>
+              <textarea id="summary" maxlength="32767" spellcheck="false" aria-describedby="summary-hint"></textarea>
+              <p id="summary-hint" class="hint">เมื่อแก้ข้อความเอง ระบบจะเก็บข้อความที่แก้ไว้ คุณสามารถสร้างสรุปจากคำตอบล่าสุดได้อีกครั้ง</p>
+              <button id="reset-summary" class="btn" type="button" style="margin-top:8px" disabled><span data-icon="undo"></span> สร้างสรุปอัตโนมัติใหม่</button>
+            </div>
+          </section>
+
+          <div class="actions">
+            <small id="save-state">บันทึกข้อมูลในเบราว์เซอร์บนอุปกรณ์นี้</small>
+            <div class="action-buttons">
+              <button id="cancel-edit" class="btn" type="button" hidden>ยกเลิก</button>
+              <button id="save-draft" class="btn" type="button">บันทึกฉบับร่าง</button>
+              <button class="btn primary" type="submit"><span data-icon="save"></span> บันทึกการเข้าตรวจ</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section id="history-view" aria-labelledby="history-heading" hidden>
+        <div class="view-title">
+          <div><h2 id="history-heading" tabindex="-1">ประวัติเข้าตรวจ</h2><p>ค้นหา เปิดแก้ไข หรือลบรายการที่เก็บในอุปกรณ์นี้</p></div>
+          <button id="new-visit" class="btn primary" type="button"><span data-icon="plus"></span> เพิ่มการเข้าตรวจ</button>
+        </div>
+        <div class="card">
+          <div class="history-tools"><input id="history-search" type="search" aria-label="ค้นหาประวัติเข้าตรวจ" placeholder="ค้นหารหัสสาขา ชื่อสาขา ผู้เข้าตรวจ หรือ PMA"></div>
+          <p id="history-count" class="hint" aria-live="polite"></p>
+          <div id="record-list"></div>
+        </div>
+      </section>
+      <footer class="footer">AI Ordering – Store Monitor System · ข้อมูลอยู่ในเบราว์เซอร์นี้ โปรดส่งออก Excel เพื่อเก็บสำเนา</footer>
+    </div>
+  </main>
+</div>
+<div id="toast" class="toast" role="status" hidden></div>
+<script>
+'use strict';
+const PMA = new Map([
+  ['10','BEER AND RTD ALCOHOL'], ['11','LIQUOR'], ['12','IMPORT CIGARETTEE'],
+  ['14','HEALTH CARE'], ['18','MEDICINE'], ['20','FROZEN MEAL BOX'],
+  ['28','BOOKS'], ['29','UHT MILK'], ['32','COOKING AND CANNED FOODS'],
+  ['33','INSTANT FOODS'], ['34','PACKAGED FOODS AND DRINKS'], ['38','NON-CARBONATED SOFT DRINK'],
+  ['40','CONFECTIONERY'], ['41','SNACKS'], ['42','CARBONATED SOFT DRINK (CSD)'],
+  ['43','IT Devices'], ['46','7 Service (GP)'], ['49','ENERGY AND SPORT DRINK'],
+  ['50','PERSONAL CARE'], ['51','HOUSEWARE'], ['52','STATIONERY'],
+  ['53','DRUG & HEALTHCARE'], ['54','SANITARY'], ['55','HOUSEHOLD'],
+  ['56','ELECTRONIC'], ['58','IT APPLIANCE'], ['59','HERBAL PERSONAL CARE'],
+  ['63','THAI SNACK AND DRY FRUIT'], ['68','สินค้าเทศกาล'], ['69','SERVICE CARD'],
+  ['72','THAI CIGARETTEE'], ['74','CHARITY'], ['89','CATALOG ON SHELF']
+]);
+const RESIDENTIAL_MARKET = 'ที่พักอาศัย / ตลาด';
+const PROFILES = [RESIDENTIAL_MARKET,'สถานศึกษา','สำนักงาน','ปั๊มน้ำมัน','โรงงาน','โรงพยาบาล','สถานที่ท่องเที่ยว','สถานบันเทิง','จุดต่อรถ','อื่น ๆ'];
+const ROLES = ['ผู้จัดการร้าน','ผู้ช่วยผู้จัดการร้าน','พนักงานประจำ','ทวิภาคี','เจ้าของร้าน','อื่น ๆ'];
+const WEEKDAYS = ['จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์'];
+const SMART = ['ใช้','ไม่ใช้','ไม่แน่ใจ'];
+const FREQUENCIES = ['ทุกวัน','หลายครั้งต่อสัปดาห์','สัปดาห์ละครั้ง','น้อยกว่าสัปดาห์ละครั้ง','ใช้เป็นครั้งคราว','ไม่แน่ใจ'];
+const FIT = ['เหมาะสม','เหมาะสมบางส่วน','ไม่เหมาะสม','ไม่แน่ใจ'];
+const ADJUST = ['สั่งตาม AI','มีการแก้ยอด','ไม่แน่ใจ'];
+const DIRECTIONS = ['เพิ่มยอด','ลดยอด'];
+const REASONS = ['สต็อกเหลือมาก','สต็อกต่ำหรือใกล้ขาด','คาดว่าจะขายดี','คาดว่ายอดขายลดลง','มีโปรโมชัน','ยอด AI ไม่เหมาะสม','ประสบการณ์ผู้สั่ง','ข้อจำกัดพื้นที่หรือจำนวนแพ็ค'];
+const FACTORS = ['วันขายดี','ช่วงเงินเดือนออก','สภาพอากาศ','กลุ่มลูกค้า','เหตุการณ์พิเศษ','โปรโมชัน','สต็อกคงเหลือ','วันหยุดหรือเทศกาล'];
+const ISSUES = ['สินค้าขาด','สินค้าเหลือมาก','Mark Down สูง','ค่า I ไม่ตรง','ติดเงื่อนไขแพ็ค','คำแนะนำ AI ไม่ตรงกับสถานการณ์','ข้อจำกัดในการใช้งานระบบ'];
+const KEY = 'ai-ordering-store-monitor.v1';
+const $ = id => document.getElementById(id);
+const form = $('visit-form');
+
+function make(tag, className, label) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (label !== undefined) node.textContent = label;
+  return node;
+}
+
+function icon(name, extraClass = '') {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'icon ' + extraClass);
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '1.8');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  const use = document.createElementNS(svg.namespaceURI, 'use');
+  use.setAttribute('href', '#i-' + name);
+  svg.append(use);
+  return svg;
+}
+
+function selectOptions(select, values, prompt = 'เลือกหรือเว้นว่าง') {
+  select.append(new Option(prompt, ''), ...values.map(value => new Option(value, value)));
+}
+
+function twoDigits(value) {
+  return String(value).padStart(2, '0');
+}
+
+function populateChoices(host, values, radio = false) {
+  const group = values.map(value => {
+    const label = make('label', 'choice');
+    const input = make('input');
+    input.type = radio ? 'radio' : 'checkbox';
+    if (radio) input.name = host.id;
+    input.value = value;
+    label.append(input, make('span', '', value || 'ยังไม่ระบุ'));
+    host.append(label);
+    return input;
+  });
+  return {
+    get: () => group.filter(input => input.checked).map(input => input.value),
+    set(values) {
+      for (const input of group) input.checked = values.includes(input.value);
+    }
+  };
+}
+
+function pmaLabel(code) {
+  return code + ' · ' + PMA.get(code);
+}
+
+function pmaPicker(host, label) {
+  const details = make('details', 'pma-picker');
+  const heading = make('summary');
+  heading.setAttribute('aria-label', label);
+  const count = make('span', 'pma-count');
+  heading.append(make('span', '', 'เลือก PMA'), count, icon('chevron', 'chevron'));
+  const body = make('div', 'pma-body');
+  const search = make('input');
+  search.type = 'search';
+  search.placeholder = 'ค้นหารหัสหรือชื่อ PMA';
+  search.setAttribute('aria-label', 'ค้นหา ' + label);
+  const list = make('div', 'pma-list');
+  const noMatch = make('p', 'hint', 'ไม่พบ PMA ที่ตรงกับคำค้น');
+  noMatch.hidden = true;
+  const tags = make('div', 'pma-tags');
+  const options = [...PMA].map(([code, title]) => {
+    const row = make('label', 'pma-option');
+    const input = make('input');
+    input.type = 'checkbox';
+    input.value = code;
+    row.append(input, make('b', '', code), make('span', '', title));
+    list.append(row);
+    return { row, input, code, query: (code + ' ' + title).toLowerCase() };
+  });
+
+  function selected() {
+    return options.filter(({input}) => input.checked).map(({code}) => code);
+  }
+  function update() {
+    const codes = selected();
+    count.textContent = codes.length + ' / ' + PMA.size;
+    tags.replaceChildren(...codes.map(code => make('span', '', pmaLabel(code))));
+    tags.hidden = codes.length === 0;
+  }
+  function filter() {
+    const query = search.value.trim().toLowerCase();
+    for (const option of options) option.row.hidden = !option.query.includes(query);
+    noMatch.hidden = options.some(({row}) => !row.hidden);
+  }
+  search.addEventListener('input', filter);
+  search.addEventListener('keydown', event => {
+    if (event.key === 'Enter') event.preventDefault();
+  });
+  list.addEventListener('change', update);
+  body.append(search, list, noMatch);
+  details.append(heading, body);
+  host.append(details, tags);
+  update();
+  return {
+    get: selected,
+    set(codes) {
+      for (const option of options) option.input.checked = codes.includes(option.code);
+      search.value = '';
+      details.open = false;
+      filter();
+      update();
+    },
+    focus() {
+      details.open = true;
+      search.focus();
+    }
+  };
+}
+
+document.querySelectorAll('[data-icon]').forEach(node => node.append(icon(node.dataset.icon)));
+selectOptions($('profile'), PROFILES);
+selectOptions($('role'), ROLES);
+selectOptions($('smart'), SMART, 'เลือกรูปแบบการใช้งาน');
+selectOptions($('frequency'), FREQUENCIES, 'เลือกความถี่');
+selectOptions($('visit-hour'), Array.from({length:24}, (_, hour) => twoDigits(hour)), 'ชั่วโมง');
+selectOptions($('visit-minute'), Array.from({length:60}, (_, minute) => twoDigits(minute)), 'นาที');
+const weekdays = populateChoices($('weekdays'), WEEKDAYS);
+const fit = populateChoices($('fit'), ['', ...FIT], true);
+const adjustStatus = populateChoices($('adjust-status'), ['', ...ADJUST], true);
+const factors = populateChoices($('factors'), FACTORS);
+const issues = populateChoices($('issues'), ISSUES);
+const visitPmas = pmaPicker($('visit-pmas'), 'PMA ที่ตรวจ');
+const issuePmas = pmaPicker($('issue-pmas'), 'PMA ที่พบปัญหา');
+
+let adjustments = [];
+let records = [];
+let editing = null;
+let summaryEdited = false;
+let dirty = false;
+let toastTimer;
+
+function notice(message = '') {
+  $('notice').textContent = message;
+  $('notice').hidden = !message;
+}
+
+function toast(message) {
+  clearTimeout(toastTimer);
+  $('toast').textContent = message;
+  $('toast').hidden = false;
+  toastTimer = setTimeout(() => { $('toast').hidden = true; }, 3200);
+}
+
+function renumberAdjustments() {
+  adjustments.forEach((item, index) => {
+    item.heading.textContent = 'รายการแก้ยอดที่ ' + (index + 1);
+    item.remove.setAttribute('aria-label', 'ลบรายการแก้ยอดที่ ' + (index + 1));
+  });
+}
+
+function addAdjustment(data = {}) {
+  const row = make('div', 'adjust-item');
+  const header = make('div', 'adjust-head');
+  const heading = make('strong');
+  const remove = make('button', 'btn icon-only danger');
+  remove.type = 'button';
+  remove.append(icon('trash'));
+  header.append(heading, remove);
+
+  const grid = make('div', 'grid');
+  const directionField = make('label', 'field');
+  const direction = make('select');
+  selectOptions(direction, DIRECTIONS, 'เลือกเพิ่มหรือลดยอด');
+  direction.value = data.direction || '';
+  directionField.append(make('span', 'field-label', 'ทิศทางการแก้ยอด'), direction);
+  const pmaField = make('div', 'field');
+  const pmaHost = make('div');
+  pmaField.append(make('span', 'field-label', 'PMA ที่แก้ยอด'), pmaHost);
+  const picker = pmaPicker(pmaHost, 'PMA ที่แก้ยอด');
+  picker.set(data.pmas || []);
+
+  const reasonField = make('fieldset', 'wide');
+  const reasonHost = make('div', 'choices');
+  reasonField.append(make('legend', '', 'เหตุผลที่แก้ยอด · เลือกได้หลายข้อ'), reasonHost);
+  const reasons = populateChoices(reasonHost, REASONS);
+  reasons.set(data.reasons || []);
+  const customField = make('label', 'field wide');
+  const custom = make('textarea');
+  custom.maxLength = 2000;
+  custom.placeholder = 'พิมพ์เหตุผลเพิ่มเติม';
+  custom.value = data.custom || '';
+  customField.append(make('span', 'field-label', 'เหตุผลอื่น ๆ'), custom);
+  grid.append(directionField, pmaField, reasonField, customField);
+  row.append(header, grid);
+  $('adjust-list').append(row);
+
+  const item = {
+    heading, remove, direction, picker,
+    get: () => ({direction: direction.value, pmas: picker.get(), reasons: reasons.get(), custom: custom.value.trim()})
+  };
+  adjustments.push(item);
+  renumberAdjustments();
+  remove.addEventListener('click', () => {
+    const index = adjustments.indexOf(item);
+    adjustments.splice(index, 1);
+    row.remove();
+    renumberAdjustments();
+    (adjustments[index]?.direction || $('add-adjust')).focus();
+    changed();
+  });
+  return item;
+}
+
+function localNow() {
+  const time = new Date();
+  return time.getFullYear() + '-' + twoDigits(time.getMonth() + 1) + '-' + twoDigits(time.getDate()) +
+    'T' + twoDigits(time.getHours()) + ':' + twoDigits(time.getMinutes());
+}
+
+function visitDateLabel(record) {
+  const [day, time = record.draftTime || ''] = record.date.split('T');
+  return [day, /^\d{2}:\d{2}/.test(time) ? time : ''].filter(Boolean).join(' ');
+}
+
+function updateConditionalFields() {
+  const canSetFrequency = $('smart').value === 'ใช้';
+  $('frequency').disabled = !canSetFrequency;
+  $('frequency-hint').hidden = canSetFrequency;
+  $('profile-other-field').hidden = $('profile').value !== 'อื่น ๆ';
+  $('role-other-field').hidden = $('role').value !== 'อื่น ๆ';
+  const hasAdjustments = adjustStatus.get()[0] === 'มีการแก้ยอด';
+  $('adjust-area').hidden = !hasAdjustments;
+}
+
+function ensureAdjustment() {
+  if (!$('adjust-area').hidden && adjustments.length === 0) addAdjustment();
+}
+
+function readForm() {
+  const val = id => $(id).value.trim();
+  const day = val('date');
+  const hour = val('visit-hour');
+  const minute = val('visit-minute');
+  const hasFullDate = day && hour && minute;
+  return {
+    date: hasFullDate ? day + 'T' + hour + ':' + minute : day,
+    ...(!hasFullDate && (hour || minute) ? {draftTime: hour + ':' + minute} : {}),
+    storeId: val('store-id'), storeName: val('store-name'), monitor: val('monitor'),
+    profile: val('profile'), profileOther: val('profile') === 'อื่น ๆ' ? val('profile-other') : '',
+    role: val('role'), roleOther: val('role') === 'อื่น ๆ' ? val('role-other') : '',
+    weekdays: weekdays.get(), smart: val('smart'), frequency: val('smart') === 'ใช้' ? val('frequency') : '',
+    pmas: visitPmas.get(), fit: fit.get()[0] || '', fitNote: val('fit-note'),
+    adjustStatus: adjustStatus.get()[0] || '', adjustNote: val('adjust-note'),
+    adjustments: adjustStatus.get()[0] === 'มีการแก้ยอด' ? adjustments.map(item => item.get()) : [],
+    factors: factors.get(), factorNote: val('factor-note'), issues: issues.get(), issuePmas: issuePmas.get(),
+    issueNote: val('issue-note'), summaryEdited, summary: $('summary').value
+  };
+}
+
+function withOther(value, other) {
+  return value === 'อื่น ๆ' && other ? other : value;
+}
+
+function autoSummary(data) {
+  const lines = [];
+  const add = (label, items) => {
+    const text = items.filter(Boolean).join(' | ');
+    if (text) lines.push(label + ' — ' + text);
+  };
+  add('การเข้าตรวจ', [data.storeId && 'สาขา ' + data.storeId, data.storeName, visitDateLabel(data), data.monitor && 'ผู้เข้าตรวจ ' + data.monitor]);
+  add('ข้อมูลร้าน', [withOther(data.profile, data.profileOther), withOther(data.role, data.roleOther) && 'ผู้สั่งสินค้า ' + withOther(data.role, data.roleOther), data.weekdays.length && 'ขายดีวัน' + data.weekdays.join(', ')]);
+  add('New Smart Assortment', [data.smart, data.frequency]);
+  add('PMA ที่ตรวจ', [data.pmas.map(pmaLabel).join(', ')]);
+  add('01 ความเหมาะสมของการสั่ง AI', [data.fit, data.fitNote]);
+  add('02 การแก้ไขยอดสั่งของร้าน', [data.adjustStatus, data.adjustNote]);
+  for (const item of data.adjustments) {
+    const parts = [item.direction, item.pmas.map(pmaLabel).join(', '), [...item.reasons, item.custom].filter(Boolean).join(', ')].filter(Boolean);
+    if (parts.length) lines.push('   • ' + parts.join(' | '));
+  }
+  add('03 ปัจจัยหน้างาน', [data.factors.join(', '), data.factorNote]);
+  add('04 ปัญหาที่พบ', [data.issues.join(', '), data.issuePmas.length && 'PMA ' + data.issuePmas.map(pmaLabel).join(', '), data.issueNote]);
+  return lines.join('\n');
+}
+
+function renderSummary() {
+  $('summary-mode').textContent = summaryEdited ? 'แก้ไขด้วยตนเอง' : 'สรุปอัตโนมัติ';
+  $('summary-mode').classList.toggle('draft', summaryEdited);
+  $('reset-summary').disabled = !summaryEdited;
+  if (!summaryEdited) $('summary').value = autoSummary(readForm()).slice(0, 32767);
+}
+
+function changed() {
+  dirty = true;
+  $('save-state').textContent = 'มีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก';
+  renderSummary();
+}
+
+function loadForm(record = null) {
+  editing = record ? {id: record.id, revision: record.revision, draft: record.draft} : null;
+  form.reset();
+  const data = record || {};
+  const mapping = {
+    'store-id':'storeId', 'store-name':'storeName', monitor:'monitor', profile:'profile',
+    'profile-other':'profileOther', role:'role', 'role-other':'roleOther', smart:'smart', frequency:'frequency',
+    'fit-note':'fitNote', 'adjust-note':'adjustNote', 'factor-note':'factorNote', 'issue-note':'issueNote'
+  };
+  for (const [id, key] of Object.entries(mapping)) $(id).value = data[key] || '';
+  for (const id of ['store-id','store-name']) $(id).setCustomValidity('');
+  const [day, time = data.draftTime || ''] = (record ? record.date : localNow()).split('T');
+  const [hour, minute] = time.split(':');
+  $('date').value = day;
+  $('visit-hour').value = hour || '';
+  $('visit-minute').value = minute || '';
+  weekdays.set(data.weekdays || []);
+  fit.set([data.fit || '']);
+  adjustStatus.set([data.adjustStatus || '']);
+  factors.set(data.factors || []);
+  issues.set(data.issues || []);
+  visitPmas.set(data.pmas || []);
+  issuePmas.set(data.issuePmas || []);
+  $('adjust-list').replaceChildren();
+  adjustments = [];
+  (data.adjustments || []).forEach(addAdjustment);
+  updateConditionalFields();
+  ensureAdjustment();
+  summaryEdited = Boolean(data.summaryEdited);
+  $('summary').value = data.summary || '';
+  renderSummary();
+  $('form-heading').textContent = record ? 'แก้ไขการเข้าตรวจ' : 'บันทึกการเข้าตรวจใหม่';
+  $('form-state').textContent = record ? (record.draft ? 'กำลังแก้ไขฉบับร่าง' : 'กำลังแก้ไขรายการ') : 'รายการใหม่';
+  $('form-state').classList.toggle('draft', Boolean(record?.draft));
+  $('cancel-edit').hidden = !record;
+  $('save-state').textContent = 'บันทึกข้อมูลในเบราว์เซอร์บนอุปกรณ์นี้';
+  dirty = false;
+}
+
+function readRecords() {
+  const raw = localStorage.getItem(KEY);
+  if (raw === null) return [];
+  const saved = JSON.parse(raw);
+  if (saved.version !== 1 || !Array.isArray(saved.records)) throw new Error('Invalid saved records');
+  return saved.records.map(record => {
+    if (record.profile !== 'ที่พักอาศัย' && record.profile !== 'ตลาด') return record;
+    const normalized = {...record, profile: RESIDENTIAL_MARKET};
+    if (!normalized.summaryEdited) normalized.summary = autoSummary(normalized).slice(0, 32767);
+    return normalized;
+  });
+}
+
+function refresh() {
+  try {
+    records = readRecords();
+    notice();
+  } catch {
+    notice('เปิดข้อมูลที่เก็บไว้ไม่ได้ โปรดตรวจสอบสิทธิ์การจัดเก็บข้อมูลของเบราว์เซอร์');
+  }
+  renderDashboard();
+}
+
+function showView(history, focus = true) {
+  $('form-view').hidden = history;
+  $('history-view').hidden = !history;
+  $('crumb').textContent = history ? 'ประวัติเข้าตรวจ' : 'แบบฟอร์มเข้าตรวจ';
+  $('nav-form').toggleAttribute('aria-current', !history);
+  $('nav-history').toggleAttribute('aria-current', history);
+  $(history ? 'nav-history' : 'nav-form').setAttribute('aria-current', 'page');
+  if (history) refresh();
+  if (focus) {
+    $(history ? 'history-heading' : 'form-heading').focus({preventScroll:true});
+    window.scrollTo(0, 0);
+  }
+}
+
+function canDiscard() {
+  return !dirty || window.confirm('ละทิ้งการเปลี่ยนแปลงที่ยังไม่ได้บันทึกหรือไม่');
+}
+
+function token() {
+  const values = crypto.getRandomValues(new Uint32Array(4));
+  return Array.from(values, value => value.toString(16).padStart(8, '0')).join('');
+}
+
+function validateVisit() {
+  for (const id of ['store-id','store-name']) {
+    if (!$(id).value.trim()) {
+      $(id).setCustomValidity('กรุณากรอกข้อมูลในช่องนี้');
+      $(id).reportValidity();
+      return false;
+    }
+  }
+  if (!$('adjust-area').hidden) {
+    if (adjustments.length === 0) {
+      toast('กรุณาเพิ่มรายการแก้ยอดอย่างน้อยหนึ่งรายการ');
+      $('add-adjust').focus();
+      return false;
+    }
+    for (const item of adjustments) {
+      if (!item.direction.value) {
+        toast('กรุณาระบุว่าเพิ่มยอดหรือลดยอด');
+        item.direction.focus();
+        return false;
+      }
+      if (item.picker.get().length === 0) {
+        toast('กรุณาเลือก PMA ที่แก้ยอด');
+        item.picker.focus();
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function save(draft) {
+  if (!draft && !validateVisit()) return;
+  if (draft && editing && !editing.draft && !window.confirm('เปลี่ยนรายการที่บันทึกแล้วเป็นฉบับร่างหรือไม่')) return;
+  try {
+    const latest = readRecords();
+    const index = editing ? latest.findIndex(item => item.id === editing.id) : -1;
+    if (editing && (index < 0 || latest[index].revision !== editing.revision)) {
+      notice('รายการนี้ถูกแก้ไขหรือลบจากอีกหน้าต่าง โปรดเก็บข้อความที่กำลังแก้ไว้และเปิดรายการล่าสุดจากประวัติ');
+      toast('บันทึกไม่ได้ เนื่องจากรายการมีการเปลี่ยนแปลง');
+      return;
+    }
+    const now = new Date().toISOString();
+    const record = {
+      ...readForm(), id: editing?.id || token(), revision: token(), draft,
+      createdAt: latest[index]?.createdAt || now, updatedAt: now
+    };
+    if (index < 0) latest.push(record);
+    else latest[index] = record;
+    localStorage.setItem(KEY, JSON.stringify({version: 1, records: latest}));
+  } catch {
+    notice('บันทึกไม่ได้ โปรดตรวจสอบสิทธิ์หรือพื้นที่จัดเก็บของเบราว์เซอร์ ข้อมูลที่กำลังกรอกยังอยู่ในแบบฟอร์ม');
+    toast('บันทึกลงอุปกรณ์ไม่สำเร็จ');
+    return;
+  }
+  loadForm();
+  $('history-search').value = '';
+  showView(true);
+  toast(draft ? 'บันทึกฉบับร่างแล้ว' : 'บันทึกการเข้าตรวจแล้ว');
+}
+
+function allPmas(record) {
+  const found = new Set([...record.pmas, ...record.issuePmas, ...record.adjustments.flatMap(item => item.pmas)]);
+  return [...PMA.keys()].filter(code => found.has(code));
+}
+
+function statusLabel(record) {
+  return record.draft ? 'ฉบับร่าง' : 'บันทึกแล้ว';
+}
+
+function renderDashboard() {
+  const complete = records.filter(record => !record.draft);
+  $('stat-visits').textContent = complete.length;
+  $('stat-stores').textContent = new Set(complete.map(record => record.storeId.toLowerCase())).size;
+  $('stat-pmas').textContent = new Set(complete.flatMap(allPmas)).size;
+  $('export').disabled = records.length === 0;
+  renderHistory();
+}
+
+function recordButton(name, text, action, danger = false) {
+  const button = make('button', danger ? 'btn danger' : 'btn');
+  button.type = 'button';
+  button.append(icon(name), document.createTextNode(text));
+  button.addEventListener('click', action);
+  return button;
+}
+
+function renderHistory() {
+  const query = $('history-search').value.toLowerCase().trim();
+  const matching = [...records].sort((a, b) => (b.date || '').localeCompare(a.date || '') ||
+    b.updatedAt.localeCompare(a.updatedAt)).filter(record =>
+    [record.storeId, record.storeName, record.monitor, ...allPmas(record).map(pmaLabel)]
+      .join(' ').toLowerCase().includes(query));
+  $('history-count').textContent = matching.length + ' จาก ' + records.length + ' รายการ';
+  const list = $('record-list');
+  list.replaceChildren();
+  if (!matching.length) {
+    list.append(make('p', 'empty', query ? 'ไม่พบรายการที่ตรงกับคำค้น' : 'ยังไม่มีประวัติเข้าตรวจ กด “เพิ่มการเข้าตรวจ” เพื่อเริ่มบันทึก'));
+    return;
+  }
+  for (const record of matching) {
+    const row = make('article', 'record');
+    const main = make('div', 'record-main');
+    const title = make('div', 'record-title');
+    const name = [record.storeId, record.storeName].filter(Boolean).join(' · ') || 'ฉบับร่างยังไม่ระบุสาขา';
+    title.append(make('strong', '', name), make('span', record.draft ? 'pill draft' : 'pill', statusLabel(record)));
+    const metadata = [visitDateLabel(record), record.monitor && 'ผู้เข้าตรวจ ' + record.monitor, 'PMA ' + allPmas(record).length + ' หมวด'].filter(Boolean);
+    main.append(title, make('p', '', metadata.join(' · ')));
+    const buttons = make('div', 'record-buttons');
+    const editButton = recordButton('edit', 'แก้ไข', () => {
+      if (!canDiscard()) return;
+      loadForm(record);
+      showView(false);
+    });
+    editButton.setAttribute('aria-label', 'แก้ไข ' + name);
+    const deleteButton = recordButton('trash', 'ลบ', () => deleteRecord(record, name), true);
+    deleteButton.setAttribute('aria-label', 'ลบ ' + name);
+    buttons.append(editButton, deleteButton);
+    row.append(main, buttons);
+    list.append(row);
+  }
+}
+
+function deleteRecord(record, name) {
+  if (!window.confirm('ลบรายการ “' + name + '” หรือไม่')) return;
+  try {
+    const latest = readRecords();
+    const current = latest.find(item => item.id === record.id);
+    if (!current || current.revision !== record.revision) {
+      refresh();
+      toast('รายการเปลี่ยนแปลงแล้ว โปรดตรวจสอบประวัติล่าสุด');
+      return;
+    }
+    localStorage.setItem(KEY, JSON.stringify({version: 1, records: latest.filter(item => item.id !== record.id)}));
+  } catch {
+    notice('ลบรายการไม่ได้ โปรดตรวจสอบการจัดเก็บข้อมูลของเบราว์เซอร์');
+    return;
+  }
+  if (editing?.id === record.id) loadForm();
+  refresh();
+  $('history-heading').focus({preventScroll:true});
+  toast('ลบรายการแล้ว');
+}
+
+form.addEventListener('input', event => {
+  const input = event.target;
+  if (input.type === 'search' || input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT') return;
+  if (input.id === 'summary') summaryEdited = true;
+  if (input.id === 'store-id' || input.id === 'store-name') input.setCustomValidity('');
+  changed();
+});
+form.addEventListener('change', event => {
+  const input = event.target;
+  if (input.type === 'search') return;
+  updateConditionalFields();
+  if (input.name === 'adjust-status') ensureAdjustment();
+  changed();
+});
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  save(false);
+});
+$('add-adjust').addEventListener('click', () => {
+  addAdjustment().direction.focus();
+  changed();
+});
+$('reset-summary').addEventListener('click', () => {
+  if (!window.confirm('แทนที่ข้อความที่แก้ไว้ด้วยสรุปอัตโนมัติจากคำตอบล่าสุดหรือไม่')) return;
+  summaryEdited = false;
+  changed();
+  $('summary').focus();
+});
+$('save-draft').addEventListener('click', () => save(true));
+$('nav-form').addEventListener('click', () => showView(false));
+$('nav-history').addEventListener('click', () => showView(true));
+$('history-search').addEventListener('input', renderHistory);
+$('new-visit').addEventListener('click', () => {
+  if (!canDiscard()) return;
+  loadForm();
+  showView(false);
+});
+$('cancel-edit').addEventListener('click', () => {
+  if (!canDiscard()) return;
+  loadForm();
+  showView(true);
+});
+window.addEventListener('storage', event => {
+  if (event.key === KEY || event.key === null) refresh();
+});
+window.addEventListener('beforeunload', event => {
+  if (dirty) {
+    event.preventDefault();
+    event.returnValue = '';
+  }
+});
+
+const encoder = new TextEncoder();
+const workbookType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const xmlStart = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+const spreadsheetNS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+const relNS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const packageRelNS = 'http://schemas.openxmlformats.org/package/2006/relationships';
+
+function xml(value) {
+  return String(value ?? '')
+    .replace(/[^\x09\x0a\x0d\x20-\ud7ff\ue000-\ufffd\u{10000}-\u{10ffff}]/gu, '')
+    .replace(/_x[0-9a-f]{4}_/gi, match => '_x005F_' + match.slice(1))
+    .replace(/[&<>"'\r]/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&apos;', '\r':'&#13;'}[char]));
+}
+
+function columnLetter(index) {
+  let letters = '';
+  for (let value = index + 1; value > 0; value = Math.floor((value - 1) / 26)) {
+    letters = String.fromCharCode(65 + (value - 1) % 26) + letters;
+  }
+  return letters;
+}
+
+function worksheet(rows, widths) {
+  const columns = widths.map((width, index) => {
+    const col = index + 1;
+    return '<col min="' + col + '" max="' + col + '" width="' + width + '" customWidth="1"/>';
+  }).join('');
+  const table = rows.map((row, rowIndex) => {
+    const n = rowIndex + 1;
+    const cells = row.map((value, colIndex) => {
+      const address = columnLetter(colIndex) + n;
+      // Inline string cells preserve leading zeroes and treat user input as text.
+      return '<c r="' + address + '" s="' + (rowIndex === 0 ? 1 : 2) + '" t="inlineStr"><is><t xml:space="preserve">' +
+        xml(value) + '</t></is></c>';
+    }).join('');
+    return '<row r="' + n + '"' + (rowIndex === 0 ? ' ht="26" customHeight="1"' : '') + '>' + cells + '</row>';
+  }).join('');
+  const range = 'A1:' + columnLetter(rows[0].length - 1) + rows.length;
+  return xmlStart + '<worksheet xmlns="' + spreadsheetNS + '"><dimension ref="' + range +
+    '"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>' +
+    '<selection pane="bottomLeft" activeCell="A2" sqref="A2"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="18"/>' +
+    '<cols>' + columns + '</cols><sheetData>' + table + '</sheetData><autoFilter ref="' + range + '"/></worksheet>';
+}
+
+const styles = xmlStart + '<styleSheet xmlns="' + spreadsheetNS + '">' +
+  '<fonts count="2"><font><sz val="11"/><name val="Tahoma"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Tahoma"/></font></fonts>' +
+  '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>' +
+  '<fill><patternFill patternType="solid"><fgColor rgb="FF08766D"/><bgColor indexed="64"/></patternFill></fill></fills>' +
+  '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
+  '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+  '<cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+  '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center"/></xf>' +
+  '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf></cellXfs>' +
+  '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+
+const crcTable = Uint32Array.from({length:256}, (_, value) => {
+  for (let bit = 0; bit < 8; bit++) value = (value & 1) ? (0xedb88320 ^ (value >>> 1)) : value >>> 1;
+  return value >>> 0;
+});
+
+function crc32(data) {
+  let crc = 0xffffffff;
+  for (const byte of data) crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+// Write an uncompressed ZIP container using the standard ZIP local and central headers.
+function zip(entries) {
+  const files = [];
+  const directory = [];
+  let offset = 0;
+  let directorySize = 0;
+  for (const [path, value] of entries) {
+    const name = encoder.encode(path);
+    const data = encoder.encode(value);
+    const crc = crc32(data);
+    const header = new Uint8Array(30 + name.length);
+    const local = new DataView(header.buffer);
+    local.setUint32(0, 0x04034b50, true);
+    local.setUint16(4, 20, true);
+    local.setUint16(12, 0x0021, true);
+    local.setUint32(14, crc, true);
+    local.setUint32(18, data.length, true);
+    local.setUint32(22, data.length, true);
+    local.setUint16(26, name.length, true);
+    header.set(name, 30);
+    files.push(header, data);
+
+    const entry = new Uint8Array(46 + name.length);
+    const central = new DataView(entry.buffer);
+    central.setUint32(0, 0x02014b50, true);
+    central.setUint16(4, 20, true);
+    central.setUint16(6, 20, true);
+    central.setUint16(14, 0x0021, true);
+    central.setUint32(16, crc, true);
+    central.setUint32(20, data.length, true);
+    central.setUint32(24, data.length, true);
+    central.setUint16(28, name.length, true);
+    central.setUint32(42, offset, true);
+    entry.set(name, 46);
+    directory.push(entry);
+    directorySize += entry.length;
+    offset += header.length + data.length;
+  }
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true);
+  end.setUint16(8, entries.length, true);
+  end.setUint16(10, entries.length, true);
+  end.setUint32(12, directorySize, true);
+  end.setUint32(16, offset, true);
+  return new Blob([...files, ...directory, end.buffer], {type: workbookType});
+}
+
+function makeWorkbook(saved) {
+  const base = ['รหัสรายการ','สถานะรายการ','วันและเวลาเข้าตรวจ','รหัสสาขา','ชื่อสาขา'];
+  const visits = [[...base, 'โปรไฟล์ร้าน','วันขายดี','ผู้เข้าตรวจ','ตำแหน่งผู้สั่งสินค้า',
+    'การใช้ New Smart Assortment','ความถี่ในการใช้งาน','PMA ที่ตรวจ','ความเหมาะสมของการสั่ง AI',
+    'เหตุผลความเหมาะสม','พฤติกรรมการสั่ง','หมายเหตุการแก้ยอด','ปัจจัยหน้างาน','รายละเอียดปัจจัย',
+    'ปัญหาที่พบ','PMA ที่พบปัญหา','รายละเอียดปัญหา','ประเภทสรุป','สรุปข้อค้นพบ']];
+  const pmas = [[...base, 'รหัส PMA','ชื่อ PMA','เลือกเป็น PMA ที่ตรวจ','มีการเพิ่มยอด','มีการลดยอด','ระบุว่าพบปัญหา']];
+  const changes = [[...base, 'ลำดับรายการแก้ยอด','ทิศทางการแก้ยอด','รหัส PMA','ชื่อ PMA','เหตุผลที่เลือก','เหตุผลอื่น ๆ']];
+  const flag = value => value ? 'ใช่' : '';
+  for (const record of saved) {
+    const key = [record.id, statusLabel(record), visitDateLabel(record), record.storeId, record.storeName];
+    visits.push([...key, withOther(record.profile, record.profileOther), record.weekdays.join(', '), record.monitor,
+      withOther(record.role, record.roleOther), record.smart, record.frequency, record.pmas.map(pmaLabel).join(', '),
+      record.fit, record.fitNote, record.adjustStatus, record.adjustNote, record.factors.join(', '),
+      record.factorNote, record.issues.join(', '), record.issuePmas.map(pmaLabel).join(', '), record.issueNote,
+      record.summaryEdited ? 'แก้ไขด้วยตนเอง' : 'อัตโนมัติ', record.summary]);
+    const increase = new Set();
+    const decrease = new Set();
+    record.adjustments.forEach((item, index) => {
+      const target = item.direction === 'เพิ่มยอด' ? increase : item.direction === 'ลดยอด' ? decrease : null;
+      for (const code of item.pmas) target?.add(code);
+      for (const code of item.pmas.length ? item.pmas : ['']) {
+        changes.push([...key, index + 1, item.direction, code, PMA.get(code) || '', item.reasons.join(', '), item.custom]);
+      }
+    });
+    for (const code of allPmas(record)) {
+      pmas.push([...key, code, PMA.get(code), flag(record.pmas.includes(code)),
+        flag(increase.has(code)), flag(decrease.has(code)), flag(record.issuePmas.includes(code))]);
+    }
+  }
+
+  const sheets = [
+    {name:'การเข้าตรวจ', rows:visits, widths:[37,17,24,15,25,23,25,23,24,31,25,42,29,38,22,38,31,38,31,38,38,22,72]},
+    {name:'ข้อมูล PMA', rows:pmas, widths:[37,17,24,15,25,14,36,25,18,18,23]},
+    {name:'รายละเอียดการแก้ยอด', rows:changes, widths:[37,17,24,15,25,24,21,14,36,44,45]}
+  ];
+  const rel = (id, type, target) => '<Relationship Id="rId' + id + '" Type="' + relNS + '/' + type + '" Target="' + target + '"/>';
+  const rels = content => xmlStart + '<Relationships xmlns="' + packageRelNS + '">' + content + '</Relationships>';
+  const type = (path, suffix) => '<Override PartName="/' + path + '" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.' + suffix + '+xml"/>';
+  const contentTypes = xmlStart + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+    '<Default Extension="xml" ContentType="application/xml"/>' + type('xl/workbook.xml', 'sheet.main') +
+    type('xl/styles.xml', 'styles') + sheets.map((_, i) => type('xl/worksheets/sheet' + (i + 1) + '.xml', 'worksheet')).join('') + '</Types>';
+  const book = xmlStart + '<workbook xmlns="' + spreadsheetNS + '" xmlns:r="' + relNS + '"><bookViews><workbookView/></bookViews><sheets>' +
+    sheets.map((sheet, i) => '<sheet name="' + xml(sheet.name) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>').join('') + '</sheets></workbook>';
+  const bookRels = rels(sheets.map((_, i) => rel(i + 1, 'worksheet', 'worksheets/sheet' + (i + 1) + '.xml')).join('') +
+    rel(sheets.length + 1, 'styles', 'styles.xml'));
+  return zip([
+    ['[Content_Types].xml', contentTypes], ['_rels/.rels', rels(rel(1, 'officeDocument', 'xl/workbook.xml'))],
+    ['xl/workbook.xml', book], ['xl/_rels/workbook.xml.rels', bookRels], ['xl/styles.xml', styles],
+    ...sheets.map((sheet, i) => ['xl/worksheets/sheet' + (i + 1) + '.xml', worksheet(sheet.rows, sheet.widths)])
+  ]);
+}
+
+$('export').addEventListener('click', () => {
+  try {
+    const latest = readRecords();
+    if (!latest.length) {
+      refresh();
+      return;
+    }
+    const url = URL.createObjectURL(makeWorkbook(latest));
+    const link = make('a');
+    link.href = url;
+    link.download = 'AI-Ordering-Store-Monitor-' + localNow().slice(0,10) + '.xlsx';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    toast('สร้างไฟล์ Excel แล้ว (' + latest.length + ' รายการ)');
+  } catch {
+    notice('ส่งออกไฟล์ Excel ไม่สำเร็จ โปรดตรวจสอบการจัดเก็บข้อมูลของเบราว์เซอร์แล้วลองอีกครั้ง');
+  }
+});
+
+loadForm();
+refresh();
+</script>
+</body>
+</html>
