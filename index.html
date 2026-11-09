@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-ASUHYULfWQenPwePYO5BH29b1o1MCx2jmlUvXQi/XKI=' 'sha256-oSfW4UcxQF1AML8W0ZDObwoAsf+U8eHZBMK6hadG0L0=' 'sha256-8rgJH/2mEnXpYTRedDmeDp4ELGQAaCtF3Wr8jawO8sY=' 'sha256-T9STCSpQCpNtS5WwjNoB2rJSaC8OOZ3mGB4im04DH+g='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
-<!-- ตั้งค่าก่อนใช้งาน: ใส่ Project URL และ Publishable/anon key ใน content ของสองบรรทัดนี้
-ห้ามใช้ service_role หรือ sb_secret_ key ต้องรัน SQL และเพิ่มสมาชิกทีมตาม README ก่อน
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-pxlWfDnS7SEwz+O8M+m69mxCnqKeQazz4Zdy625r5rA=' 'sha256-6nRT0UyndFPucQSVJUTP+afwaDIyIMmS9wljn5bJKKw=' 'sha256-8rgJH/2mEnXpYTRedDmeDp4ELGQAaCtF3Wr8jawO8sY=' 'sha256-ivJ9k+3DA5N6KFWv6JCBHjjGCPpx3OeYq50mlGEmEGQ='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<!-- ตั้งค่าการเชื่อมต่อ Supabase ไว้ใน content ของสองบรรทัดนี้แล้ว
+ห้ามใช้ service_role หรือ sb_secret_ key; โปรเจกต์ SLA เดิมได้เพิ่มตาราง Monitor แล้ว
 ไฟล์นี้รวม CSS และ JavaScript แล้ว ใช้แทน index.html เดิมบน GitHub Pages ได้ -->
-<meta name="monitor-supabase-url" content="">
-<meta name="monitor-supabase-key" content="">
+<meta name="monitor-supabase-url" content="https://oilascwgnfymzkmmtssl.supabase.co">
+<meta name="monitor-supabase-key" content="sb_publishable_4qHGllfvJXam5v6D0YRobw_U5d7ERPQ">
 <title>AI Ordering – Store Monitor System</title>
 <style>
 
@@ -174,7 +174,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
         <button id="nav-history" type="button"><span data-icon="history"></span> ประวัติเข้าตรวจ</button>
       </nav>
     </div>
-    <div class="side-note"><b>ฐานข้อมูลส่วนกลาง</b><span id="connection-state">กรุณาเข้าสู่ระบบ</span><br><button id="sign-out" type="button" class="btn" hidden>ออกจากระบบ</button></div>
+    <div class="side-note"><b>ฐานข้อมูลส่วนกลาง</b><span id="connection-state">กรอกและส่งออกได้ทันที</span></div>
   </aside>
   <main class="main">
     <header class="topbar"><div class="topbar-inner">
@@ -196,18 +196,6 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
         <div class="stat"><span class="badge-icon" data-icon="shop"></span><div><strong id="stat-stores">0</strong><span>สาขาที่ตรวจ</span></div></div>
         <div class="stat"><span class="badge-icon" data-icon="box"></span><div><strong id="stat-pmas">0</strong><span>PMA ที่ตรวจ</span></div></div>
       </div>
-      <section id="auth-panel" class="card" aria-labelledby="auth-heading">
-  <h2 id="auth-heading">เข้าสู่ระบบทีม Monitor</h2>
-  <p class="hint">เฉพาะสมาชิกที่ผู้ดูแลอนุญาต สามารถดูและจัดการข้อมูลร่วมกันได้</p>
-  <form id="login-form" class="grid">
-    <label class="field"><span>อีเมล</span><input id="email" type="email" autocomplete="username" required></label>
-    <label class="field"><span>รหัสผ่าน</span><input id="password" type="password" autocomplete="current-password" required></label>
-    <button id="sign-in" class="btn primary" type="submit">เข้าสู่ระบบ</button>
-  </form>
-  <p id="auth-status" class="hint" role="status"></p>
-  <button id="mobile-sign-out" type="button" class="btn" hidden>ออกจากระบบ</button>
-</section>
-      <div id="mobile-account" class="card" hidden><span id="account-email"></span> <button id="account-sign-out" class="btn" type="button">ออกจากระบบ</button></div>
       <div id="notice" class="notice" role="alert" hidden></div>
 
       <section id="form-view" aria-labelledby="form-heading">
@@ -299,11 +287,12 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
             </div>
           </div>
         </fieldset></form>
+        <button id="back-history" class="btn" type="button" hidden>กลับไปประวัติเข้าตรวจ</button>
       </section>
 
       <section id="history-view" aria-labelledby="history-heading" hidden>
         <div class="view-title">
-          <div><h2 id="history-heading" tabindex="-1">ประวัติเข้าตรวจ</h2><p>ข้อมูลสะสมร่วมกันของสมาชิกทีม รวมฉบับร่าง · ส่งออกทุกบันทึกโดยไม่จำกัดตามคำค้น</p></div>
+          <div><h2 id="history-heading" tabindex="-1">ประวัติเข้าตรวจ</h2><p>ข้อมูลสะสมทั้งหมด รวมฉบับร่าง · ส่งออกทุกบันทึกโดยไม่จำกัดตามคำค้น</p></div>
           <button id="new-visit" class="btn primary" type="button"><span data-icon="plus"></span> เพิ่มการเข้าตรวจ</button>
         </div>
         <div class="card">
@@ -312,7 +301,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
           <div id="record-list"></div>
         </div>
       </section>
-      <footer class="footer">AI Ordering – Store Monitor System · ข้อมูลส่วนกลางสำหรับทีมที่ได้รับอนุญาต</footer>
+      <footer class="footer">AI Ordering – Store Monitor System · ข้อมูลสะสมส่วนกลาง · บันทึกและส่งออกได้ทันที</footer>
     </div>
   </main>
 </div>
@@ -362,6 +351,7 @@ window.MONITOR_CONFIG = {
 </script>
 <script>
 'use strict';
+const MONITOR_COLUMNS = 'id,revision,draft,payload,created_at,updated_at';
 // Database metadata is kept outside the unchanged form payload.
 class MonitorCloud {
   constructor(client) { this.client = client; this.ready = false; this.generation = 0; }
@@ -371,7 +361,7 @@ class MonitorCloud {
   }
   check(error) {
     if (!error) return;
-    if (error.code === '42501') throw new Error('บัญชีนี้ไม่มีสิทธิ์ หรือสิทธิ์ถูกยกเลิก โปรดติดต่อผู้ดูแล');
+    if (error.code === '42501') throw new Error('ยังไม่มีสิทธิ์ทำรายการนี้ โปรดติดต่อผู้ดูแล');
     if (error.code === '23514') throw new Error('ข้อมูลไม่ผ่านการตรวจสอบของฐานข้อมูล');
     throw new Error(error.message || 'ติดต่อฐานข้อมูลไม่ได้');
   }
@@ -384,10 +374,10 @@ class MonitorCloud {
     return data.records.map(row => this.unpack(row));
   }
   async create(id, payload, draft) {
-    const {data, error} = await this.client.from('monitor_visits').insert({id, payload, draft}).select().single();
+    const {data, error} = await this.client.from('monitor_visits').insert({id, payload, draft}).select(MONITOR_COLUMNS).single();
     if (error?.code === '23505') {
       // A response may be lost after a committed insert. Retry the same ID safely.
-      const previous = await this.client.from('monitor_visits').select().eq('id', id).single();
+      const previous = await this.client.from('monitor_visits').select(MONITOR_COLUMNS).eq('id', id).single();
       this.check(previous.error);
       // Compare recursively: JSONB does not preserve object-key order.
       const canonical = value => Array.isArray(value) ? value.map(canonical) :
@@ -747,8 +737,10 @@ function changed() {
   renderSummary();
 }
 
-function loadForm(record = null) {
-  editing = record ? {id: record.id, revision: record.revision, draft: record.draft} : null;
+let readOnlyView = false;
+function loadForm(record = null, readOnly = false) {
+  readOnlyView = readOnly;
+  editing = record && !readOnly ? {id: record.id, revision: record.revision, draft: record.draft} : null;
   form.reset();
   const data = record || {};
   const mapping = {
@@ -778,11 +770,14 @@ function loadForm(record = null) {
   summaryEdited = Boolean(data.summaryEdited);
   $('summary').value = data.summary || '';
   renderSummary();
-  $('form-heading').textContent = record ? 'แก้ไขการเข้าตรวจ' : 'บันทึกการเข้าตรวจใหม่';
-  $('form-state').textContent = record ? (record.draft ? 'กำลังแก้ไขฉบับร่าง' : 'กำลังแก้ไขรายการ') : 'รายการใหม่';
+  $('form-heading').textContent = readOnly ? 'รายละเอียดการเข้าตรวจ' : record ? 'แก้ไขการเข้าตรวจ' : 'บันทึกการเข้าตรวจใหม่';
+  $('form-state').textContent = readOnly ? statusLabel(record) : record ? (record.draft ? 'กำลังแก้ไขฉบับร่าง' : 'กำลังแก้ไขรายการ') : 'รายการใหม่';
   $('form-state').classList.toggle('draft', Boolean(record?.draft));
   $('cancel-edit').hidden = !record;
   $('save-state').textContent = 'บันทึกลงฐานข้อมูลส่วนกลางเมื่อกดบันทึก';
+  $('form-access').disabled = readOnly || !cloud.ready;
+  document.querySelector('.actions').hidden = readOnly;
+  $('back-history').hidden = !readOnly;
   dirty = false;
 }
 
@@ -872,7 +867,7 @@ function validateVisit() {
 let saving = false;
 let pendingCreateId = null;
 async function save(draft) {
-  if (!cloud.ready || saving) return;
+  if (!cloud.ready || saving || readOnlyView) return;
   if (!draft && (!form.reportValidity() || !validateVisit())) return;
   if (draft && editing && !editing.draft && !window.confirm('เปลี่ยนรายการที่บันทึกแล้วเป็นฉบับร่างหรือไม่')) return;
   saving = true;
@@ -900,7 +895,7 @@ async function save(draft) {
     }
   } finally {
     saving = false;
-    $('form-access').disabled = !cloud.ready;
+    $('form-access').disabled = readOnlyView || !cloud.ready;
     if (saved) $('save-state').textContent = 'บันทึกลงฐานข้อมูลส่วนกลางแล้ว';
   }
 }
@@ -953,15 +948,13 @@ function renderHistory() {
     const metadata = [visitDateLabel(record), record.monitor && 'ผู้เข้าตรวจ ' + record.monitor, 'PMA ' + allPmas(record).length + ' หมวด'].filter(Boolean);
     main.append(title, make('p', '', metadata.join(' · ')));
     const buttons = make('div', 'record-buttons');
-    const editButton = recordButton('edit', 'แก้ไข', () => {
+    const viewButton = recordButton('form', 'ดูรายละเอียด', () => {
       if (!canDiscard()) return;
-      loadForm(record);
+      loadForm(record, true);
       showView(false);
     });
-    editButton.setAttribute('aria-label', 'แก้ไข ' + name);
-    const deleteButton = recordButton('trash', 'ลบ', () => deleteRecord(record, name), true);
-    deleteButton.setAttribute('aria-label', 'ลบ ' + name);
-    buttons.append(editButton, deleteButton);
+    viewButton.setAttribute('aria-label', 'ดูรายละเอียด ' + name);
+    buttons.append(viewButton);
     row.append(main, buttons);
     list.append(row);
   }
@@ -1006,7 +999,14 @@ $('reset-summary').addEventListener('click', () => {
   $('summary').focus();
 });
 $('save-draft').addEventListener('click', () => save(true));
-$('nav-form').addEventListener('click', () => showView(false));
+$('nav-form').addEventListener('click', () => {
+  if (readOnlyView) loadForm();
+  showView(false);
+});
+$('back-history').addEventListener('click', () => {
+  loadForm();
+  showView(true);
+});
 $('nav-history').addEventListener('click', () => showView(true));
 $('history-search').addEventListener('input', renderHistory);
 $('new-visit').addEventListener('click', () => {
@@ -1204,85 +1204,9 @@ function makeWorkbook(saved) {
 </script>
 <script>
 'use strict';
-let sessionTask = 0;
 let importing = false;
 let exporting = false;
-let applyingUserId = null;
-let activeUserId = null;
-let loggingIn = false;
 
-function clearTeamData() {
-  cloud.ready = false;
-  cloud.generation++;
-  records = [];
-  pendingCreateId = null;
-  loadForm();
-  $('form-access').disabled = true;
-  $('import-local').hidden = true;
-  $('mobile-account').hidden = true;
-  renderDashboard();
-}
-
-async function applySession(session) {
-  const task = ++sessionTask;
-  applyingUserId = session?.user.id || null;
-  clearTeamData();
-  $('sign-out').hidden = !session;
-  $('mobile-sign-out').hidden = !session;
-  $('login-form').hidden = Boolean(session);
-  $('auth-panel').hidden = false;
-  $('connection-state').textContent = 'กรุณาเข้าสู่ระบบ';
-  if (!session) { activeUserId = null; $('mobile-account').hidden = true; $('auth-status').textContent = ''; return; }
-  $('auth-status').textContent = 'กำลังตรวจสอบสิทธิ์สมาชิกทีม…';
-  try {
-    const {data, error} = await cloud.client.from('monitor_members').select('user_id')
-      .eq('user_id', session.user.id).maybeSingle();
-    cloud.check(error);
-    if (task !== sessionTask) return;
-    if (!data) throw new Error('บัญชีนี้ยังไม่ได้รับสิทธิ์เข้าทีม โปรดติดต่อผู้ดูแล');
-    cloud.ready = true;
-    activeUserId = session.user.id;
-    $('form-access').disabled = false;
-    $('connection-state').textContent = session.user.email;
-    $('auth-panel').hidden = true;
-    // Keep a visible sign-out button on narrow screens too.
-    $('mobile-account').hidden = false;
-    $('account-email').textContent = session.user.email;
-    try { $('import-local').hidden = readRecords().length === 0; } catch { /* Import reports malformed legacy data. */ }
-    await refresh();
-  } catch (error) {
-    if (task === sessionTask) { $('auth-status').textContent = error.message; notice(error.message); }
-  } finally { if (task === sessionTask) applyingUserId = null; }
-}
-
-async function signOut() {
-  if (!canDiscard() || saving || importing) return;
-  // Clear private data before the asynchronous sign-out request.
-  sessionTask++;
-  clearTeamData();
-  $('mobile-account').hidden = true;
-  const {error} = await cloud.client.auth.signOut({scope:'local'});
-  if (error) { notice('ออกจากระบบไม่สำเร็จ: ' + error.message); return; }
-  await applySession(null);
-  notice();
-}
-
-$('login-form').addEventListener('submit', async event => {
-  event.preventDefault();
-  if (!cloud.client) return;
-  $('sign-in').disabled = true;
-  loggingIn = true;
-  $('auth-status').textContent = 'กำลังเข้าสู่ระบบ…';
-  try {
-    const {data, error} = await cloud.client.auth.signInWithPassword({email:$('email').value.trim(), password:$('password').value});
-    if (error) throw error;
-    $('password').value = '';
-    notice();
-    await applySession(data.session);
-  } catch (error) { $('auth-status').textContent = 'เข้าสู่ระบบไม่สำเร็จ: ' + error.message; }
-  finally { loggingIn = false; $('sign-in').disabled = false; }
-});
-for (const id of ['sign-out','mobile-sign-out','account-sign-out']) $(id).addEventListener('click', signOut);
 $('refresh-records').addEventListener('click', refresh);
 
 $('export').addEventListener('click', async () => {
@@ -1314,7 +1238,7 @@ $('import-local').addEventListener('click', async () => {
   if (!cloud.ready || importing || saving) return;
   let legacy;
   try { legacy = readRecords(); } catch (error) { notice(error.message); return; }
-  if (!legacy.length || !window.confirm('นำเข้า ' + legacy.length + ' รายการจากเครื่องนี้ให้สมาชิกทีมเห็นร่วมกันหรือไม่? ข้อมูลเดิมจะยังอยู่')) return;
+  if (!legacy.length || !window.confirm('นำเข้า ' + legacy.length + ' รายการจากเครื่องนี้ให้ทุกคนที่เปิดลิงก์เห็นร่วมกันหรือไม่? ข้อมูลเดิมจะยังอยู่')) return;
   importing = true;
   $('import-local').disabled = true;
   const generation = cloud.generation;
@@ -1322,7 +1246,7 @@ $('import-local').addEventListener('click', async () => {
   let importError = '';
   try {
     for (const record of legacy) {
-      if (!cloud.ready || generation !== cloud.generation) throw new Error('เซสชันเปลี่ยนแล้ว กรุณาเข้าสู่ระบบอีกครั้ง');
+      if (!cloud.ready || generation !== cloud.generation) throw new Error('การเชื่อมต่อเปลี่ยนแล้ว กรุณาโหลดหน้าใหม่');
       const {id, revision, draft, createdAt, updatedAt, ...payload} = record;
       if (typeof id !== 'string' || !/^[0-9a-f]{32}$/i.test(id)) throw new Error('รหัสข้อมูลเดิมไม่ถูกต้อง');
       // Original IDs are 128 random bits: map losslessly and deterministically to UUID syntax.
@@ -1340,39 +1264,27 @@ $('import-local').addEventListener('click', async () => {
   }
 });
 
+
 async function initialize() {
   loadForm();
   renderDashboard();
   const config = window.MONITOR_CONFIG || {};
   const key = config.supabasePublishableKey || '';
   let validKey = key.startsWith('sb_publishable_');
-  try { validKey ||= JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).role === 'anon'; } catch { /* Publishable keys are not JWTs. */ }
+  try { validKey ||= JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).role === 'anon'; } catch {}
   if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(config.supabaseUrl || '') || !validKey || key.startsWith('sb_secret_') || !window.supabase) {
-    $('auth-status').textContent = 'ยังไม่ได้ตั้งค่าระบบ: ให้ผู้ดูแลกรอก Supabase URL และ publishable/anon key ในแท็ก monitor-supabase-url และ monitor-supabase-key ด้านบนของ index.html ตาม README';
-    $('sign-in').disabled = true;
+    notice('ยังไม่ได้ตั้งค่าระบบ: ให้ผู้ดูแลกรอก Supabase URL และ publishable/anon key ในแท็ก monitor-supabase-url และ monitor-supabase-key ด้านบนของ index.html ตาม README');
     return;
   }
+  // Use only the public API key. Never read, create or sign out an SLA Auth session.
   cloud = new MonitorCloud(window.supabase.createClient(config.supabaseUrl, key, {
-    auth:{persistSession:true, autoRefreshToken:true, detectSessionInUrl:false}
+    auth:{storageKey:'monitor-public-no-auth.v1', persistSession:false, autoRefreshToken:false, detectSessionInUrl:false}
   }));
-  // Avoid awaiting Supabase calls inside its synchronous Auth event callback.
-  cloud.client.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT') {
-      sessionTask++;
-      clearTeamData();
-      $('mobile-account').hidden = true;
-      void applySession(null);
-    } else if (event === 'SIGNED_IN' && !loggingIn && session?.user.id !== activeUserId && session?.user.id !== applyingUserId) {
-      setTimeout(() => {
-        if (!loggingIn && session?.user.id !== activeUserId && session?.user.id !== applyingUserId) void applySession(session);
-      }, 0);
-    }
-  });
-  try {
-    const {data, error} = await cloud.client.auth.getSession();
-    if (error) throw error;
-    await applySession(data.session);
-  } catch (error) { $('auth-status').textContent = error.message; }
+  cloud.ready = true;
+  $('form-access').disabled = false;
+  $('connection-state').textContent = 'กรอกและส่งออกได้ทันที';
+  try { $('import-local').hidden = readRecords().length === 0; } catch {}
+  await refresh();
 }
 void initialize();
 
