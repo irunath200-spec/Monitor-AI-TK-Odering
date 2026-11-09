@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-pxlWfDnS7SEwz+O8M+m69mxCnqKeQazz4Zdy625r5rA=' 'sha256-6nRT0UyndFPucQSVJUTP+afwaDIyIMmS9wljn5bJKKw=' 'sha256-8rgJH/2mEnXpYTRedDmeDp4ELGQAaCtF3Wr8jawO8sY=' 'sha256-ivJ9k+3DA5N6KFWv6JCBHjjGCPpx3OeYq50mlGEmEGQ='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-pxlWfDnS7SEwz+O8M+m69mxCnqKeQazz4Zdy625r5rA=' 'sha256-2rLqlTN2ewY0O91OssMpXgF3CDMgGYSWSxSUKW5fw6A=' 'sha256-sCa0BXdOYzCXXxRRxAS95tPS4l8Mpjyzek6TBcPRegE=' 'sha256-ivJ9k+3DA5N6KFWv6JCBHjjGCPpx3OeYq50mlGEmEGQ='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- ตั้งค่าการเชื่อมต่อ Supabase ไว้ใน content ของสองบรรทัดนี้แล้ว
 ห้ามใช้ service_role หรือ sb_secret_ key; โปรเจกต์ SLA เดิมได้เพิ่มตาราง Monitor แล้ว
 ไฟล์นี้รวม CSS และ JavaScript แล้ว ใช้แทน index.html เดิมบน GitHub Pages ได้ -->
@@ -219,6 +219,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
               </fieldset>
               <label class="field"><span class="field-label">รหัสสาขา <span class="req">*</span></span><input id="store-id" maxlength="48" placeholder="เช่น 00123" required></label>
               <label class="field"><span class="field-label">ชื่อสาขา <span class="req">*</span></span><input id="store-name" maxlength="180" placeholder="ชื่อร้านหรือชื่อสาขา" required></label>
+              <label class="field"><span class="field-label">ร้าน Kudsan</span><select id="kudsan"></select></label>
               <label class="field"><span class="field-label">โปรไฟล์ร้าน</span><select id="profile"></select></label>
               <label class="field"><span class="field-label">ตำแหน่งผู้สั่งสินค้า</span><select id="role"></select></label>
               <label class="field" id="profile-other-field" hidden><span class="field-label">ระบุโปรไฟล์ร้าน</span><input id="profile-other" maxlength="180"></label>
@@ -226,7 +227,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
               <label class="field wide"><span class="field-label">ชื่อผู้เข้าตรวจ</span><input id="monitor" maxlength="160" placeholder="ชื่อผู้ Monitor"></label>
               <fieldset class="wide"><legend>วันที่ขายดี <span class="hint">· เลือกได้หลายวัน</span></legend><div id="weekdays" class="choices"></div></fieldset>
               <label class="field"><span class="field-label">ร้านใช้ New Smart Assortment หรือไม่</span><select id="smart"></select></label>
-              <label class="field"><span class="field-label">ความถี่ในการใช้ New Smart Assortment</span><select id="frequency" disabled></select><span class="hint" id="frequency-hint">เลือก “ใช้” เพื่อระบุความถี่</span></label>
+              <label class="field"><span class="field-label">ความถี่ในการใช้ New Smart Assortment</span><select id="frequency"></select></label>
               <div class="field wide"><span class="field-label">PMA ที่ตรวจ <span class="hint">· เลือกได้หลายหมวด</span></span><div id="visit-pmas"></div></div>
             </div>
           </section>
@@ -428,10 +429,11 @@ const RESIDENTIAL_MARKET = 'ที่พักอาศัย / ตลาด';
 const PROFILES = [RESIDENTIAL_MARKET,'สถานศึกษา','สำนักงาน','ปั๊มน้ำมัน','โรงงาน','โรงพยาบาล','สถานที่ท่องเที่ยว','สถานบันเทิง','จุดต่อรถ','อื่น ๆ'];
 const ROLES = ['ผู้จัดการร้าน','ผู้ช่วยผู้จัดการร้าน','พนักงานประจำ','ทวิภาคี','เจ้าของร้าน','อื่น ๆ'];
 const WEEKDAYS = ['จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์','อาทิตย์'];
-const SMART = ['ใช้','ไม่ใช้','ไม่แน่ใจ'];
-const FREQUENCIES = ['ทุกวัน','หลายครั้งต่อสัปดาห์','สัปดาห์ละครั้ง','น้อยกว่าสัปดาห์ละครั้ง','ใช้เป็นครั้งคราว','ไม่แน่ใจ'];
-const FIT = ['เหมาะสม','เหมาะสมบางส่วน','ไม่เหมาะสม','ไม่แน่ใจ'];
-const ADJUST = ['สั่งตาม AI','มีการแก้ยอด','ไม่แน่ใจ'];
+const SMART = ['ใช้','ไม่ใช้'];
+const FREQUENCIES = ['ใช้สม่ำเสมอ','ใช้บางครั้ง','ไม่ใช้เลย'];
+const FIT = ['เหมาะสม','เหมาะสมบางส่วน','ไม่เหมาะสม'];
+const ADJUST = ['สั่งตาม AI','มีการแก้ยอด'];
+const KUDSAN = ['เป็นร้าน Kudsan','ไม่เป็นร้าน Kudsan'];
 const DIRECTIONS = ['เพิ่มยอด','ลดยอด'];
 const REASONS = ['สต็อกเหลือมาก','สต็อกต่ำหรือใกล้ขาด','คาดว่าจะขายดี','คาดว่ายอดขายลดลง','มีโปรโมชัน','ยอด AI ไม่เหมาะสม','ประสบการณ์ผู้สั่ง','ข้อจำกัดพื้นที่หรือจำนวนแพ็ค'];
 const FACTORS = ['วันขายดี','ช่วงเงินเดือนออก','สภาพอากาศ','กลุ่มลูกค้า','เหตุการณ์พิเศษ','โปรโมชัน','สต็อกคงเหลือ','วันหยุดหรือเทศกาล'];
@@ -563,6 +565,7 @@ selectOptions($('profile'), PROFILES);
 selectOptions($('role'), ROLES);
 selectOptions($('smart'), SMART, 'เลือกรูปแบบการใช้งาน');
 selectOptions($('frequency'), FREQUENCIES, 'เลือกความถี่');
+selectOptions($('kudsan'), KUDSAN, 'เลือกร้าน Kudsan');
 selectOptions($('visit-hour'), Array.from({length:24}, (_, hour) => twoDigits(hour)), 'ชั่วโมง');
 selectOptions($('visit-minute'), Array.from({length:60}, (_, minute) => twoDigits(minute)), 'นาที');
 const weekdays = populateChoices($('weekdays'), WEEKDAYS);
@@ -665,9 +668,6 @@ function visitDateLabel(record) {
 }
 
 function updateConditionalFields() {
-  const canSetFrequency = $('smart').value === 'ใช้';
-  $('frequency').disabled = !canSetFrequency;
-  $('frequency-hint').hidden = canSetFrequency;
   $('profile-other-field').hidden = $('profile').value !== 'อื่น ๆ';
   $('role-other-field').hidden = $('role').value !== 'อื่น ๆ';
   const hasAdjustments = adjustStatus.get()[0] === 'มีการแก้ยอด';
@@ -687,10 +687,10 @@ function readForm() {
   return {
     date: hasFullDate ? day + 'T' + hour + ':' + minute : day,
     ...(!hasFullDate && (hour || minute) ? {draftTime: hour + ':' + minute} : {}),
-    storeId: val('store-id'), storeName: val('store-name'), monitor: val('monitor'),
+    storeId: val('store-id'), storeName: val('store-name'), monitor: val('monitor'), kudsan: val('kudsan'),
     profile: val('profile'), profileOther: val('profile') === 'อื่น ๆ' ? val('profile-other') : '',
     role: val('role'), roleOther: val('role') === 'อื่น ๆ' ? val('role-other') : '',
-    weekdays: weekdays.get(), smart: val('smart'), frequency: val('smart') === 'ใช้' ? val('frequency') : '',
+    weekdays: weekdays.get(), smart: val('smart'), frequency: val('frequency'),
     pmas: visitPmas.get(), fit: fit.get()[0] || '', fitNote: val('fit-note'),
     adjustStatus: adjustStatus.get()[0] || '', adjustNote: val('adjust-note'),
     adjustments: adjustStatus.get()[0] === 'มีการแก้ยอด' ? adjustments.map(item => item.get()) : [],
@@ -711,6 +711,7 @@ function autoSummary(data) {
   };
   add('การเข้าตรวจ', [data.storeId && 'สาขา ' + data.storeId, data.storeName, visitDateLabel(data), data.monitor && 'ผู้เข้าตรวจ ' + data.monitor]);
   add('ข้อมูลร้าน', [withOther(data.profile, data.profileOther), withOther(data.role, data.roleOther) && 'ผู้สั่งสินค้า ' + withOther(data.role, data.roleOther), data.weekdays.length && 'ขายดีวัน' + data.weekdays.join(', ')]);
+  add('ร้าน Kudsan', [data.kudsan]);
   add('New Smart Assortment', [data.smart, data.frequency]);
   add('PMA ที่ตรวจ', [data.pmas.map(pmaLabel).join(', ')]);
   add('01 ความเหมาะสมของการสั่ง AI', [data.fit, data.fitNote]);
@@ -745,10 +746,24 @@ function loadForm(record = null, readOnly = false) {
   const data = record || {};
   const mapping = {
     'store-id':'storeId', 'store-name':'storeName', monitor:'monitor', profile:'profile',
-    'profile-other':'profileOther', role:'role', 'role-other':'roleOther', smart:'smart', frequency:'frequency',
+    'profile-other':'profileOther', role:'role', 'role-other':'roleOther', smart:'smart', frequency:'frequency', kudsan:'kudsan',
     'fit-note':'fitNote', 'adjust-note':'adjustNote', 'factor-note':'factorNote', 'issue-note':'issueNote'
   };
   for (const [id, key] of Object.entries(mapping)) $(id).value = data[key] || '';
+  // Keep removed historical answers readable in details without offering them on new forms.
+  if (readOnly && record) {
+    for (const [id,key] of [['smart','smart'],['frequency','frequency']]) {
+      if (data[key] && !$(id).value) {
+        $(id).add(new Option(data[key], data[key]));
+        $(id).value = data[key];
+      }
+    }
+  } else {
+    for (const id of ['smart','frequency']) {
+      const allowed = id === 'smart' ? SMART : FREQUENCIES;
+      for (const option of [...$(id).options]) if (option.value && !allowed.includes(option.value)) option.remove();
+    }
+  }
   for (const id of ['store-id','store-name']) $(id).setCustomValidity('');
   const [day, time = data.draftTime || ''] = (record ? record.date : localNow()).split('T');
   const [hour, minute] = time.split(':');
@@ -954,20 +969,24 @@ function renderHistory() {
       showView(false);
     });
     viewButton.setAttribute('aria-label', 'ดูรายละเอียด ' + name);
-    buttons.append(viewButton);
+    const deleteButton = recordButton('trash', 'ลบรายการ', () => deleteRecord(record, name, deleteButton), true);
+    deleteButton.setAttribute('aria-label', 'ลบรายการ ' + name);
+    buttons.append(viewButton, deleteButton);
     row.append(main, buttons);
     list.append(row);
   }
 }
 
-async function deleteRecord(record, name) {
-  if (!cloud.ready || !window.confirm('ลบรายการ “' + name + '” หรือไม่')) return;
+async function deleteRecord(record, name, button = null) {
+  if (!cloud.ready || button?.disabled || !window.confirm('ลบรายการ “' + name + '” ออกจากฐานข้อมูลถาวรหรือไม่')) return;
+  if (button) button.disabled = true;
   try {
     await cloud.remove(record);
     if (editing?.id === record.id) { pendingCreateId = null; loadForm(); }
     await refresh();
     toast('ลบรายการแล้ว');
   } catch (error) { notice('ลบไม่สำเร็จ: ' + error.message); }
+  finally { if (button) button.disabled = false; }
 }
 
 form.addEventListener('input', event => {
@@ -980,6 +999,14 @@ form.addEventListener('input', event => {
 form.addEventListener('change', event => {
   const input = event.target;
   if (input.type === 'search') return;
+  if (input.id === 'smart') {
+    if (input.value === 'ไม่ใช้') $('frequency').value = 'ไม่ใช้เลย';
+    else if (input.value === 'ใช้' && $('frequency').value === 'ไม่ใช้เลย') $('frequency').value = '';
+  }
+  if (input.id === 'frequency') {
+    if (input.value === 'ไม่ใช้เลย') $('smart').value = 'ไม่ใช้';
+    else if (input.value) $('smart').value = 'ใช้';
+  }
   updateConditionalFields();
   if (input.name === 'adjust-status') ensureAdjustment();
   changed();
@@ -1146,8 +1173,8 @@ function zip(entries) {
 }
 
 function makeWorkbook(saved) {
-  const base = ['รหัสรายการ','สถานะรายการ','วันและเวลาเข้าตรวจ','รหัสสาขา','ชื่อสาขา'];
-  const visits = [[...base, 'โปรไฟล์ร้าน','วันขายดี','ผู้เข้าตรวจ','ตำแหน่งผู้สั่งสินค้า',
+  const base = ['วันและเวลาเข้าตรวจ','รหัสสาขา','ชื่อสาขา'];
+  const visits = [[...base, 'ร้าน Kudsan','โปรไฟล์ร้าน','วันขายดี','ผู้เข้าตรวจ','ตำแหน่งผู้สั่งสินค้า',
     'การใช้ New Smart Assortment','ความถี่ในการใช้งาน','PMA ที่ตรวจ','ความเหมาะสมของการสั่ง AI',
     'เหตุผลความเหมาะสม','พฤติกรรมการสั่ง','หมายเหตุการแก้ยอด','ปัจจัยหน้างาน','รายละเอียดปัจจัย',
     'ปัญหาที่พบ','PMA ที่พบปัญหา','รายละเอียดปัญหา','ประเภทสรุป','สรุปข้อค้นพบ']];
@@ -1155,8 +1182,8 @@ function makeWorkbook(saved) {
   const changes = [[...base, 'ลำดับรายการแก้ยอด','ทิศทางการแก้ยอด','รหัส PMA','ชื่อ PMA','เหตุผลที่เลือก','เหตุผลอื่น ๆ']];
   const flag = value => value ? 'ใช่' : '';
   for (const record of saved) {
-    const key = [record.id, statusLabel(record), visitDateLabel(record), record.storeId, record.storeName];
-    visits.push([...key, withOther(record.profile, record.profileOther), record.weekdays.join(', '), record.monitor,
+    const key = [visitDateLabel(record), record.storeId, record.storeName];
+    visits.push([...key, record.kudsan || '', withOther(record.profile, record.profileOther), record.weekdays.join(', '), record.monitor,
       withOther(record.role, record.roleOther), record.smart, record.frequency, record.pmas.map(pmaLabel).join(', '),
       record.fit, record.fitNote, record.adjustStatus, record.adjustNote, record.factors.join(', '),
       record.factorNote, record.issues.join(', '), record.issuePmas.map(pmaLabel).join(', '), record.issueNote,
@@ -1177,9 +1204,9 @@ function makeWorkbook(saved) {
   }
 
   const sheets = [
-    {name:'การเข้าตรวจ', rows:visits, widths:[37,17,24,15,25,23,25,23,24,31,25,42,29,38,22,38,31,38,31,38,38,22,72]},
-    {name:'ข้อมูล PMA', rows:pmas, widths:[37,17,24,15,25,14,36,25,18,18,23]},
-    {name:'รายละเอียดการแก้ยอด', rows:changes, widths:[37,17,24,15,25,24,21,14,36,44,45]}
+    {name:'การเข้าตรวจ', rows:visits, widths:[24,15,25,23,23,25,23,24,31,25,42,29,38,22,38,31,38,31,38,38,22,72]},
+    {name:'ข้อมูล PMA', rows:pmas, widths:[24,15,25,14,36,25,18,18,23]},
+    {name:'รายละเอียดการแก้ยอด', rows:changes, widths:[24,15,25,24,21,14,36,44,45]}
   ];
   if (sheets.some(sheet => sheet.rows.length > 1048576)) throw new Error('ข้อมูลเกินจำนวนแถวสูงสุดของ Excel กรุณาติดต่อผู้ดูแล');
   const rel = (id, type, target) => '<Relationship Id="rId' + id + '" Type="' + relNS + '/' + type + '" Target="' + target + '"/>';
