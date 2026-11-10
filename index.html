@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="th"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-GRwctwusGekjAI0LIE7xr8KBItaT1injDfqLN7Z6IrU=' 'sha256-hEg0Yin4P8MMIm0/66d0wGRH+25JxwfsaA8WFNs7qMQ=' 'sha256-nQqaBiKQWFqhRSWp8fG/iJcXmjUQzGw7rggjpXQDLcE=' 'sha256-kT4bG5XMBfKMtD3m4mvk7qe8Q0JdYk3W078tw648LWI='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-GRwctwusGekjAI0LIE7xr8KBItaT1injDfqLN7Z6IrU=' 'sha256-Dq4qMTAIKZB50XAUsZjXG/ssqmYa/Yi2ShEcIBU2Ep4=' 'sha256-nQqaBiKQWFqhRSWp8fG/iJcXmjUQzGw7rggjpXQDLcE=' 'sha256-kT4bG5XMBfKMtD3m4mvk7qe8Q0JdYk3W078tw648LWI='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- ตั้งค่าการเชื่อมต่อ Supabase ไว้ใน content ของสองบรรทัดนี้แล้ว
 ห้ามใช้ service_role หรือ sb_secret_ key; โปรเจกต์ SLA เดิมได้เพิ่มตาราง Monitor แล้ว
 ไฟล์นี้รวม CSS และ JavaScript แล้ว ใช้แทน index.html เดิมบน GitHub Pages ได้ -->
@@ -155,7 +155,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
 .history-scope{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--mint);border:1px solid #c6e0d8;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:14px}
 .adjustment-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .adjustment-badge{display:inline-flex;align-items:center;gap:5px;border-radius:7px;padding:3px 8px;font-size:12px;font-weight:700;overflow-wrap:anywhere;background:#e2f3ed;color:#075c48}
-.adjustment-badge.increase,.adjustment-badge.decrease{background:#fff1f2;color:var(--red)}
+.adjustment-badge.increase,.adjustment-badge.decrease,.adjustment-badge.issue{background:#fff1f2;color:var(--red)}
 .no-adjustment-text{color:#075c48}
 body.pma-modal-open{overflow:hidden}
 .pma-dialog{width:min(1020px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--line);border-radius:18px;background:var(--bg);color:var(--ink);box-shadow:0 20px 80px #12253250;overflow:auto}
@@ -172,11 +172,11 @@ body.pma-modal-open{overflow:hidden}
 .pma-summary-card-head,.pma-branch-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .pma-summary-card h3,.pma-branch-card h3{font-size:15px;overflow-wrap:anywhere;line-height:1.45}
 .pma-summary-card-head .btn,.pma-branch-head .btn{flex:none}
-.pma-mini-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.pma-mini-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
 .pma-mini-stat{border-radius:8px;background:#f1f5f7;padding:9px 8px;text-align:center;font-size:12px;color:var(--muted)}
 .pma-mini-stat strong{display:block;font-size:23px;line-height:1.2;color:var(--ink)}
-.pma-mini-stat.increase,.pma-mini-stat.decrease{background:#fff1f2;color:var(--red)}
-.pma-mini-stat.increase strong,.pma-mini-stat.decrease strong{color:var(--red)}
+.pma-mini-stat.increase,.pma-mini-stat.decrease,.pma-mini-stat.issue{background:#fff1f2;color:var(--red)}
+.pma-mini-stat.increase strong,.pma-mini-stat.decrease strong,.pma-mini-stat.issue strong{color:var(--red)}
 .pma-mini-stat.unchanged{background:#e2f3ed;color:#075c48}.pma-mini-stat.unchanged strong{color:#075c48}
 .pma-summary-card .hint{margin-top:9px}
 .pma-detail-title{font-size:18px;margin:0 0 12px;overflow-wrap:anywhere}
@@ -190,7 +190,7 @@ body.pma-modal-open{overflow:hidden}
 @media(max-width:580px){
   .history-tools{flex-wrap:wrap}
   .history-search-field{flex-basis:100%;max-width:none;margin-left:0}
-  .pma-mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pma-mini-stats{gap:5px}
   .stat-button div>span{font-size:10px;line-height:1.3;margin-top:3px}
   .stat-link{font-size:10px;line-height:1.35}
   .pma-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:13px}
@@ -198,7 +198,7 @@ body.pma-modal-open{overflow:hidden}
   .pma-dialog-header .btn{font-size:12px;padding:7px 10px}
   .pma-dialog-content{padding:15px 13px}.pma-summary-card,.pma-branch-card{padding:13px}
   .pma-summary-card-head{flex-wrap:wrap}.pma-branch-head{flex-direction:column}
-  .pma-branch-head .btn{width:100%}.pma-mini-stat{padding:8px 5px;font-size:11px}
+  .pma-branch-head .btn{width:100%}.pma-mini-stat{padding:8px 3px;font-size:10px;overflow-wrap:anywhere}.pma-mini-stat strong{font-size:21px}
 }
 
 </style>
@@ -391,7 +391,7 @@ body.pma-modal-open{overflow:hidden}
     <div class="pma-dialog-controls">
       <button id="back-pma-overview" class="btn" type="button" hidden>← กลับไปทุก PMA</button>
       <label id="pma-summary-search-field" class="field"><span class="field-label">ค้นหา PMA</span><input id="pma-summary-search" type="search" placeholder="ค้นหารหัสหรือชื่อ PMA" list="pma-search-options"></label>
-      <label id="pma-summary-direction-field" class="field" hidden><span class="field-label">แสดงสาขา</span><select id="pma-summary-direction"><option value="">ทุกสาขาที่เกี่ยวข้อง</option><option value="เพิ่มยอด">มีการแก้เพิ่ม</option><option value="ลดยอด">มีการแก้ลด</option><option value="none">ไม่มีการแก้ยอด</option></select></label>
+      <label id="pma-summary-direction-field" class="field" hidden><span class="field-label">แสดงสาขา</span><select id="pma-summary-direction"><option value="">ทุกสาขาที่เกี่ยวข้อง</option><option value="เพิ่มยอด">มีการแก้เพิ่ม</option><option value="ลดยอด">มีการแก้ลด</option><option value="none">ไม่มีการแก้ยอด</option><option value="issues">PMA ที่พบปัญหา</option></select></label>
     </div>
     <p class="pma-summary-note">นับสาขาไม่ซ้ำในแต่ละ PMA สาขาที่มีทั้งแก้เพิ่มและแก้ลดจะนับในทั้งสองด้าน ตัวเลขแสดงจำนวนสาขา</p>
     <div id="pma-summary-content" aria-live="polite"></div>
@@ -1319,7 +1319,7 @@ function relatedAdjustments(record) {
   return record.adjustments || [];
 }
 function adjustmentBadge(direction, label = direction) {
-  return make('span', 'adjustment-badge ' + (direction === 'เพิ่มยอด' ? 'increase' : direction === 'ลดยอด' ? 'decrease' : ''), label);
+  return make('span', 'adjustment-badge ' + (direction === 'เพิ่มยอด' ? 'increase' : direction === 'ลดยอด' ? 'decrease' : direction === 'issue' ? 'issue' : ''), label);
 }
 function appendAdjustmentBadges(host, record) {
   const badges = make('div', 'adjustment-badges');
@@ -1354,11 +1354,15 @@ function buildPmaSummary(source) {
     if (record.draft) continue;
     const storeKey = normalizeStoreId(record.storeId) || record.id;
     for (const code of allPmas(record)) {
-      if (!summaries.has(code)) summaries.set(code, {code, stores:new Map(), increase:new Set(), decrease:new Set()});
+      if (!summaries.has(code)) summaries.set(code, {code, stores:new Map(), increase:new Set(), decrease:new Set(), issueStores:new Set()});
       const summary = summaries.get(code);
-      if (!summary.stores.has(storeKey)) summary.stores.set(storeKey, {key:storeKey, records:[], adjustments:[], increase:false, decrease:false});
+      if (!summary.stores.has(storeKey)) summary.stores.set(storeKey, {key:storeKey, records:[], adjustments:[], issueVisits:[], increase:false, decrease:false});
       const store = summary.stores.get(storeKey);
       store.records.push(record);
+      if ((record.issuePmas || []).includes(code)) {
+        summary.issueStores.add(storeKey);
+        store.issueVisits.push(record);
+      }
       for (const item of record.adjustments || []) {
         if (!(item.pmas || []).includes(code) || !DIRECTIONS.includes(item.direction)) continue;
         store.adjustments.push({record, item});
@@ -1377,7 +1381,7 @@ function miniStat(count, label, className = '') {
 function summaryStats(summary, extraClass = '') {
   const node = make('div', 'pma-mini-stats ' + extraClass);
   const noChanges = [...summary.stores.values()].filter(store => !store.increase && !store.decrease).length;
-  node.append(miniStat(summary.stores.size, 'สาขาที่เกี่ยวข้อง'), miniStat(summary.increase.size, 'สาขาแก้เพิ่ม', 'increase'), miniStat(summary.decrease.size, 'สาขาแก้ลด', 'decrease'), miniStat(noChanges, 'ไม่มีการแก้ยอด', 'unchanged'));
+  node.append(miniStat(summary.stores.size, 'สาขาที่เกี่ยวข้อง'), miniStat(summary.increase.size, 'สาขาแก้เพิ่ม', 'increase'), miniStat(summary.decrease.size, 'สาขาแก้ลด', 'decrease'), miniStat(noChanges, 'ไม่มีการแก้ยอด', 'unchanged'), miniStat(summary.issueStores.size, 'PMA ที่พบปัญหา', 'issue'));
   return node;
 }
 function showPmaStores(code) {
@@ -1431,7 +1435,7 @@ function renderPmaSummary() {
   }
   content.append(make('h3', 'pma-detail-title', pmaLabel(selected.code)), summaryStats(selected, 'pma-detail-stats'));
   const direction = $('pma-summary-direction').value;
-  const stores = [...selected.stores.values()].filter(store => direction === 'เพิ่มยอด' ? store.increase : direction === 'ลดยอด' ? store.decrease : direction === 'none' ? !store.increase && !store.decrease : true);
+  const stores = [...selected.stores.values()].filter(store => direction === 'เพิ่มยอด' ? store.increase : direction === 'ลดยอด' ? store.decrease : direction === 'none' ? !store.increase && !store.decrease : direction === 'issues' ? store.issueVisits.length > 0 : true);
   content.append(make('p', 'hint', 'แสดง ' + stores.length + ' จาก ' + selected.stores.size + ' สาขา'));
   if (!stores.length) {content.append(make('p', 'empty', 'ไม่พบสาขาในเงื่อนไขที่เลือก'));return;}
   const list = make('div', 'pma-branch-list');list.style.marginTop = '12px';
@@ -1450,12 +1454,22 @@ function renderPmaSummary() {
     if (store.increase) badges.append(adjustmentBadge('เพิ่มยอด', 'แก้เพิ่ม'));
     if (store.decrease) badges.append(adjustmentBadge('ลดยอด', 'แก้ลด'));
     if (!store.increase && !store.decrease) badges.append(adjustmentBadge('', 'ไม่มีการแก้ยอด'));
+    if (store.issueVisits.length) badges.append(adjustmentBadge('issue', 'พบปัญหาใน PMA นี้'));
     card.append(badges);
     if (store.adjustments.length) {
       const details = make('details');details.append(make('summary', '', 'ดูเหตุผลและการเข้าตรวจ (' + store.adjustments.length + ' รายการแก้ยอด)'));
       for (const {record,item} of store.adjustments) {
         const evidence = make('div', 'pma-evidence');
         evidence.append(adjustmentBadge(item.direction, item.direction === 'เพิ่มยอด' ? 'แก้เพิ่ม' : 'แก้ลด'), make('p', 'hint', [visitDateLabel(record), record.monitor && 'ผู้เข้าตรวจ ' + record.monitor].filter(Boolean).join(' · ')), make('p', '', [...(item.reasons || []),item.custom].filter(Boolean).join(' · ') || 'ไม่ได้ระบุเหตุผล'));
+        details.append(evidence);
+      }
+      card.append(details);
+    }
+    if (store.issueVisits.length) {
+      const details = make('details');details.append(make('summary', '', 'ดูปัญหาที่พบ (' + store.issueVisits.length + ' การเข้าตรวจ)'));
+      for (const record of store.issueVisits) {
+        const evidence = make('div', 'pma-evidence');
+        evidence.append(make('p', 'hint', [visitDateLabel(record), record.monitor && 'ผู้เข้าตรวจ ' + record.monitor].filter(Boolean).join(' · ')), make('p', '', [...(record.issues || []),record.issueNote].filter(Boolean).join(' · ') || 'ไม่ได้ระบุรายละเอียดปัญหา'));
         details.append(evidence);
       }
       card.append(details);
