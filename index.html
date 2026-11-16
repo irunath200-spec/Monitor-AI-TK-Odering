@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="th"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-GRwctwusGekjAI0LIE7xr8KBItaT1injDfqLN7Z6IrU=' 'sha256-Dq4qMTAIKZB50XAUsZjXG/ssqmYa/Yi2ShEcIBU2Ep4=' 'sha256-nQqaBiKQWFqhRSWp8fG/iJcXmjUQzGw7rggjpXQDLcE=' 'sha256-kT4bG5XMBfKMtD3m4mvk7qe8Q0JdYk3W078tw648LWI='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OFR4QSaW61gSbdGgxiMuUENBj1h35oNeUD26f8P1PYM=' 'sha256-Gj3RBU3Alls4CPUI0UItadJvcJc9KYCicUfD2Wmn7aI=' 'sha256-1UsBr36+T6qatCND8CAXq7BNSq7SGiInH4L+p6MEiLY=' 'sha256-C515rMdIF2iLThl2VYy8Cz7DEhIZa6tbbnwfWx2PsrU=' 'sha256-Va9jrfBeQRJOp/gUCrL9w+4+G7B9En/zfkDSjDspg/k=' 'sha256-M2qJs4q3dLo1Mc7qwKf4MfCelm3KcZIELp7EQKACP/E='; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- ตั้งค่าการเชื่อมต่อ Supabase ไว้ใน content ของสองบรรทัดนี้แล้ว
 ห้ามใช้ service_role หรือ sb_secret_ key; โปรเจกต์ SLA เดิมได้เพิ่มตาราง Monitor แล้ว
 ไฟล์นี้รวม CSS และ JavaScript แล้ว ใช้แทน index.html เดิมบน GitHub Pages ได้ -->
@@ -53,7 +53,7 @@ h1{font-size:clamp(25px,3.35vw,38px);line-height:1.23;letter-spacing:-.025em}
 .stat .badge-icon{width:38px;height:38px}
 .badge-icon{flex:none;display:grid;place-items:center;border-radius:10px;background:var(--mint);color:var(--teal);width:43px;height:43px}
 .stat strong{font-size:23px;line-height:1.05;display:block;font-variant-numeric:tabular-nums}
-.stat span:last-child{font-size:12px;color:var(--muted)}
+.stat div>span:last-child{font-size:12px;color:var(--muted)}
 .view-title{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
 .view-title h2{font-size:22px;line-height:1.3}
 .view-title p{font-size:13px;color:var(--muted);margin-top:4px}
@@ -63,6 +63,13 @@ h1{font-size:clamp(25px,3.35vw,38px);line-height:1.23;letter-spacing:-.025em}
 .card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
 .card-head h3{font-size:19px;line-height:1.35}
 .card-head p,.hint{color:var(--muted);font-size:13px;margin-top:3px}
+.card-head-with-note{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"badge title note"}
+.card-head-with-note .badge-icon{grid-area:badge}
+.card-head-title{grid-area:title}
+.card-head-with-note .card-head-note{grid-area:note;justify-self:end;margin:0;text-align:right;font-size:11px;color:#64748b}
+@media(max-width:580px){
+  .card-head-with-note{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"badge note" "badge title";row-gap:4px}
+}
 .number{font-size:14px;font-weight:850;letter-spacing:.03em}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 17px;align-items:start}
 .wide{grid-column:1/-1}
@@ -134,7 +141,7 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
   .brand{gap:7px}.brand-icon{width:32px;height:32px;border-radius:8px}.brand-icon .icon{width:17px}.brand strong{font-size:13px}.brand small{font-size:9px}
   .topbar-inner{padding:8px 13px}.crumb{font-size:12px;gap:5px}.crumb .icon{width:16px}.topbar .btn{font-size:12px}
   .page{padding:15px 12px 22px}.hero{padding:21px 17px 23px;border-radius:15px}.hero-art{opacity:.23}
-  .stats{gap:6px;margin-bottom:19px}.stat{padding:9px 7px;gap:6px;align-items:flex-start}.stat .badge-icon{width:24px;height:25px;border-radius:7px}.stat .icon{width:14px;height:14px}.stat strong{font-size:18px}.stat span:last-child{font-size:10px;display:block;line-height:1.3;margin-top:3px}
+  .stats{gap:6px;margin-bottom:19px}.stat{padding:9px 7px;gap:6px;align-items:flex-start}.stat .badge-icon{width:24px;height:25px;border-radius:7px}.stat .icon{width:14px;height:14px}.stat strong{font-size:18px}.stat div>span:last-child{font-size:10px;display:block;line-height:1.3;margin-top:3px}
   .grid{grid-template-columns:minmax(0,1fr);gap:13px}.card{padding:15px 13px}.card-head h3{font-size:17px}.card-head{margin-bottom:14px}
   .actions{position:static}.action-buttons{width:100%}.action-buttons .btn{flex:1 1 calc(50% - 7px)}.toast{bottom:18px}
   .record{grid-template-columns:minmax(0,1fr)}.record-buttons{justify-content:flex-end}
@@ -144,14 +151,14 @@ textarea{display:block;min-height:80px;resize:vertical;line-height:1.55}
 
 .stat-button{width:100%;text-align:left;color:var(--ink);font:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .stat-button:hover{border-color:var(--teal);box-shadow:0 3px 12px #08766d15}
-.stat-button div{min-width:0}
-.stat-button div>span{display:block;font-size:12px;color:var(--muted)}
+.stat-button .stat-text{min-width:0}
+.stat-button .stat-text>span{display:block;font-size:12px;color:var(--muted)}
 .stat-link{display:block;margin-top:5px;color:var(--teal);font-size:12px;font-weight:700}
 .history-tools{align-items:end;flex-wrap:nowrap}
 .history-tools>.btn{flex:none}
 .history-search-field{margin-left:auto;flex:1 1 0;min-width:0;max-width:430px}
 .history-search-field input{max-width:none;min-width:0}
-.history-filters{display:grid;grid-template-columns:minmax(0,260px);gap:12px;margin-bottom:12px}
+.history-filters{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:12px;margin-bottom:12px}
 .history-scope{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--mint);border:1px solid #c6e0d8;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:14px}
 .adjustment-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .adjustment-badge{display:inline-flex;align-items:center;gap:5px;border-radius:7px;padding:3px 8px;font-size:12px;font-weight:700;overflow-wrap:anywhere;background:#e2f3ed;color:#075c48}
@@ -164,6 +171,20 @@ body.pma-modal-open{overflow:hidden}
 .pma-dialog-header h2{font-size:22px;line-height:1.35}
 .pma-dialog-header p{margin-top:5px;color:var(--muted);font-size:13px}
 .pma-dialog-content{padding:20px 24px}
+.additional-section:not(:first-child){margin-top:16px}
+.additional-section h4{margin:0 0 10px;overflow-wrap:anywhere}
+.additional-section .field + .field{margin-top:10px}
+#additional-answer-list:not(:empty){margin-top:15px}
+#additional-answer-list .field-label{overflow-wrap:anywhere}
+#additional-editor{border:0;padding:0;margin:0;min-width:0}
+#additional-editor-list{display:grid;gap:12px}
+.additional-editor-group{display:grid;gap:10px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.additional-editor-row{display:flex;align-items:end;gap:8px}
+.additional-editor-row .field{flex:1;min-width:0}
+.additional-editor-row button{flex:none}
+.additional-editor-questions{display:grid;gap:8px;margin-left:16px}
+.additional-editor-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.additional-editor-group > button{justify-self:start}
 .pma-dialog-controls{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin-bottom:15px}
 .pma-dialog-controls .field{flex:1;min-width:180px}
 .pma-summary-note{font-size:13px;color:var(--muted);margin-bottom:15px}
@@ -186,12 +207,12 @@ body.pma-modal-open{overflow:hidden}
 .pma-branch-card summary{font-size:13px;font-weight:700;color:var(--teal);min-height:34px}
 .pma-evidence{padding:9px 0;border-top:1px solid #edf1f3;font-size:13px;overflow-wrap:anywhere}
 .pma-evidence .hint{margin:4px 0}
-@media(max-width:760px){.history-filters{grid-template-columns:minmax(0,1fr)}.pma-overview-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){.pma-overview-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:580px){
   .history-tools{flex-wrap:wrap}
   .history-search-field{flex-basis:100%;max-width:none;margin-left:0}
   .pma-mini-stats{gap:5px}
-  .stat-button div>span{font-size:10px;line-height:1.3;margin-top:3px}
+  .stat-button .stat-text>span{font-size:10px;line-height:1.3;margin-top:3px}
   .stat-link{font-size:10px;line-height:1.35}
   .pma-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:13px}
   .pma-dialog-header{padding:15px 13px}.pma-dialog-header h2{font-size:18px}
@@ -250,8 +271,8 @@ body.pma-modal-open{overflow:hidden}
       </div>
       <div class="stats" aria-label="ภาพรวมข้อมูลที่บันทึก">
         <div class="stat"><span class="badge-icon" data-icon="form"></span><div><strong id="stat-visits">0</strong><span>รายการเข้าตรวจ</span></div></div>
-        <div class="stat"><span class="badge-icon" data-icon="shop"></span><div><strong id="stat-stores">0</strong><span>สาขาที่ตรวจ</span></div></div>
-        <button id="open-pma-summary" type="button" class="stat stat-button" aria-haspopup="dialog" aria-controls="pma-summary-dialog" aria-label="เปิดสรุปการแก้เพิ่มและแก้ลดตาม PMA"><span class="badge-icon" data-icon="box"></span><div><strong id="stat-pmas">0</strong><span>PMA ที่เกี่ยวข้อง</span><small class="stat-link">ดูสรุป →</small></div></button>
+        <button id="open-store-history" type="button" class="stat stat-button" aria-controls="history-view"><span class="badge-icon" data-icon="shop"></span><span class="stat-text"><strong id="stat-stores">0</strong><span>สาขาที่ตรวจ</span><small class="stat-link">ดูประวัติ →</small></span></button>
+        <button id="open-pma-summary" type="button" class="stat stat-button" aria-haspopup="dialog" aria-controls="pma-summary-dialog" aria-label="เปิดสรุปการแก้เพิ่มและแก้ลดตาม PMA"><span class="badge-icon" data-icon="box"></span><span class="stat-text"><strong id="stat-pmas">0</strong><span>PMA ที่เกี่ยวข้อง</span><small class="stat-link">ดูสรุป →</small></span></button>
       </div>
       <div id="notice" class="notice" role="alert" hidden=""></div>
 
@@ -277,7 +298,16 @@ body.pma-modal-open{overflow:hidden}
               </fieldset>
               <label class="field"><span class="field-label">รหัสสาขา <span class="req">*</span></span><input id="store-id" maxlength="48" placeholder="เช่น 00123" required=""></label>
               <label class="field"><span class="field-label">ชื่อสาขา <span class="req">*</span></span><input id="store-name" maxlength="180" placeholder="ชื่อร้านหรือชื่อสาขา" required=""></label>
-              <label class="field wide"><span class="field-label">โซน<span class="req"> *</span></span><input required="" id="zone" list="zone-options" maxlength="180" placeholder="พิมพ์หรือเลือกโซนที่เคยบันทึก" aria-describedby="zone-hint"><datalist id="zone-options"></datalist><span id="zone-hint" class="hint">พิมพ์โซนใหม่ได้ หรือเลือกจากโซนในข้อมูลที่บันทึกแล้ว</span></label>
+              <label class="field wide"><span class="field-label">โซน<span class="req"> *</span></span><select required id="zone">
+                <option value="">เลือกโซน</option>
+                <optgroup label="BKK">
+                  <option>BE</option><option>BG</option><option>BN</option><option>BS</option><option>BW</option>
+                </optgroup>
+                <optgroup label="Region">
+                  <option>NEL</option><option>NEU</option><option>RC</option><option>REL</option>
+                  <option>REU</option><option>RN</option><option>RSL</option><option>RSU</option>
+                </optgroup>
+              </select></label>
               <label class="field"><span class="field-label">ร้าน Kudsan<span class="req"> *</span></span><select id="kudsan" required=""></select></label>
               <label class="field"><span class="field-label">โปรไฟล์ร้าน<span class="req"> *</span></span><select id="profile" required=""></select></label>
               <label class="field"><span class="field-label">ตำแหน่งผู้สั่งสินค้า<span class="req"> *</span></span><select id="role" required=""></select></label>
@@ -312,7 +342,7 @@ body.pma-modal-open{overflow:hidden}
           </section>
 
           <section class="card" aria-labelledby="adjust-heading">
-            <div class="card-head"><span class="badge-icon number">02</span><div><h3 id="adjust-heading">การแก้ไขยอดสั่งของร้าน</h3><p>ตรวจสอบการแก้ยอดที่ Web AI Ordering ระบุทิศทาง “เพิ่ม” หรือ “ลด” และ PMA ที่แก้ยอด พร้อมสอบถามเหตุผลจากผู้สั่งสินค้า</p></div></div>
+            <div class="card-head"><span class="badge-icon number">02</span><div><h3 id="adjust-heading">การแก้ไขยอดสั่งของร้าน</h3><p>ตรวจสอบการแก้ไขยอดที่ Web AI Ordering ใน GOT หรือ SC แล้วไปที่ "แก้ยอดสั่ง" และสอบถามเหตุผลจากผู้สั่งสินค้า</p></div></div>
             <div class="grid">
               <fieldset class="wide"><legend>พฤติกรรมการสั่ง<span class="req"> *</span></legend><div id="adjust-status" class="choices" aria-required="true"></div></fieldset>
               <div id="adjust-area" class="wide" hidden="">
@@ -323,21 +353,36 @@ body.pma-modal-open{overflow:hidden}
             </div>
           </section>
 
-          <section class="card" aria-labelledby="factors-heading">
-            <div class="card-head"><span class="badge-icon number">03</span><div><h3 id="factors-heading">พฤติกรรมเดิมในการสั่งสินค้าของร้าน</h3><p>สอบถามร้านว่าเดิมทีร้านใช้ปัจจัยอะไรบ้างในการสั่งสินค้า Dry</p></div></div>
+          <section class="card" aria-labelledby="factors-heading" aria-describedby="factors-card-note">
+            <div class="card-head card-head-with-note">
+              <span class="badge-icon number">03</span>
+              <div class="card-head-title"><h3 id="factors-heading">พฤติกรรมเดิมในการสั่งสินค้าของร้าน</h3><p>สอบถามร้านว่าเดิมทีร้านใช้ปัจจัยอะไรบ้างในการสั่งสินค้า Dry</p></div>
+              <p class="card-head-note" id="factors-card-note">เลือกอย่างน้อย 1 ข้อ หรือพิมพ์รายละเอียดปัจจัย *</p>
+            </div>
             <div class="grid">
-              <fieldset class="wide"><legend>ปัจจัยที่ร้านพิจารณา <span class="hint">· เลือกได้หลายข้อ</span><span class="req"> *</span></legend><div id="factors" class="choices" aria-required="true"></div></fieldset>
+              <fieldset class="wide"><legend>ปัจจัยที่ร้านพิจารณา <span class="hint">· เลือกได้หลายข้อ</span></legend><div id="factors" class="choices"></div></fieldset>
               <label class="field wide"><span class="field-label">รายละเอียดปัจจัย</span><textarea id="factor-note" maxlength="2500" placeholder="เช่น โรงเรียนปิดเทอม หรือมีงานในพื้นที่ใกล้ร้าน"></textarea></label>
             </div>
           </section>
 
-          <section class="card" aria-labelledby="issues-heading">
-            <div class="card-head"><span class="badge-icon number">04</span><div><h3 id="issues-heading">ปัญหาที่พบ</h3><p>สังเกตหรือสอบถามข้อมูลกับร้านระหว่างตรวจสอบ</p></div></div>
+          <section class="card" aria-labelledby="issues-heading" aria-describedby="issues-card-note">
+            <div class="card-head card-head-with-note">
+              <span class="badge-icon number">04</span>
+              <div class="card-head-title"><h3 id="issues-heading">ปัญหาที่พบ</h3><p>สังเกตหรือสอบถามข้อมูลกับร้านระหว่างตรวจสอบ</p></div>
+              <p class="card-head-note" id="issues-card-note">เลือกอย่างน้อย 1 ข้อ หรือพิมพ์รายละเอียดปัญหา *</p>
+            </div>
             <div class="grid">
-              <fieldset class="wide"><legend>ประเภทปัญหา <span class="hint">· เลือกได้หลายข้อ หรือเลือก “ไม่พบปัญหา”</span><span class="req"> *</span></legend><div id="issues" class="choices" aria-required="true"></div></fieldset>
-              <div class="field wide"><span class="field-label">PMA ที่พบปัญหา <span class="req">*</span> <span class="hint">· เลือกได้หลายหมวด</span></span><div id="issue-pmas"></div></div>
+              <fieldset class="wide"><legend>ประเภทปัญหา <span class="hint">· เลือกได้หลายข้อ หรือเลือก “ไม่พบปัญหา”</span></legend><div id="issues" class="choices"></div></fieldset>
+              <div class="field wide"><span class="field-label">PMA ที่พบปัญหา <span class="hint">· เลือกได้หลายหมวด</span></span><div id="issue-pmas"></div></div>
               <label class="field wide"><span class="field-label">รายละเอียดปัญหา</span><textarea id="issue-note" maxlength="2500" placeholder="ระบุสิ่งที่พบ สินค้าที่เกี่ยวข้อง หรือผลกระทบที่ร้านแจ้ง"></textarea></label>
             </div>
+          </section>
+
+          <section class="card" id="additional-card" aria-labelledby="additional-heading">
+            <div class="card-head"><span class="badge-icon" data-icon="form"></span><div><h3 id="additional-heading">หัวข้อเพิ่มเติม</h3></div></div>
+            <button id="open-additional-editor" class="btn" type="button" aria-haspopup="dialog"><span data-icon="plus"></span> จัดการหัวข้อเพิ่มเติม</button>
+            <p id="additional-load-status" class="hint" role="status"></p>
+            <div id="additional-answer-list"></div>
           </section>
 
           <section class="card" aria-labelledby="summary-heading">
@@ -372,6 +417,7 @@ body.pma-modal-open{overflow:hidden}
           <div class="history-tools"><button id="refresh-records" class="btn" type="button">โหลดล่าสุด</button><button id="import-local" class="btn" type="button" hidden="">นำเข้าข้อมูลเดิมจากเครื่องนี้</button><label class="field history-search-field"><input id="history-search" type="search" aria-label="ค้นหารหัสสาขา ชื่อสาขา ชื่อผู้เข้าตรวจ" placeholder="ค้นหารหัสสาขา ชื่อสาขา ชื่อผู้เข้าตรวจ"></label></div>
           <div class="history-filters">
             <label class="field"><span class="field-label">การแก้ยอดออเดอร์</span><select id="history-direction"><option value="">ทั้งหมด</option><option value="เพิ่มยอด">แก้เพิ่ม</option><option value="ลดยอด">แก้ลด</option><option value="none">ไม่มีการแก้ยอด</option></select></label>
+            <label class="field"><span class="field-label">โซน</span><select id="history-zone"><option value="">ทั้งหมด</option></select></label>
           </div>
           <div id="history-store-scope" class="history-scope" hidden><span id="history-store-label"></span><button id="clear-store-filter" class="btn" type="button">ดูประวัติทุกสาขา</button></div>
           <p id="history-count" class="hint" aria-live="polite"></p>
@@ -382,6 +428,22 @@ body.pma-modal-open{overflow:hidden}
     </div>
   </main>
 </div>
+<dialog id="additional-dialog" class="pma-dialog" aria-labelledby="additional-editor-heading">
+  <div class="pma-dialog-header">
+    <div><h2 id="additional-editor-heading">จัดการหัวข้อเพิ่มเติม</h2><p>หัวข้อที่บันทึกจะใช้ร่วมกันทุกเครื่อง และมีผลกับรายการเข้าตรวจใหม่</p></div>
+    <button id="close-additional-editor" class="btn" type="button">ปิด</button>
+  </div>
+  <form id="additional-editor-form" class="pma-dialog-content">
+    <p id="additional-editor-status" class="hint" role="status"></p>
+    <fieldset id="additional-editor" disabled>
+      <div id="additional-editor-list"></div>
+      <div class="additional-editor-actions">
+        <button id="add-additional-section" class="btn" type="button"><span data-icon="plus"></span> เพิ่มหัวข้อหลัก</button>
+        <button class="btn primary" type="submit">บันทึกหัวข้อที่ใช้ร่วมกัน</button>
+      </div>
+    </fieldset>
+  </form>
+</dialog>
 <dialog id="pma-summary-dialog" class="pma-dialog" aria-labelledby="pma-summary-heading" aria-describedby="pma-summary-description">
   <div class="pma-dialog-header">
     <div><h2 id="pma-summary-heading" tabindex="-1">สรุปการแก้ยอดตาม PMA</h2><p id="pma-summary-description">รวมทุกสาขา เฉพาะรายการที่ยืนยันบันทึกแล้ว ไม่รวมฉบับร่าง</p></div>
@@ -466,6 +528,17 @@ class MonitorCloud {
       throw new Error('ข้อมูลไม่ครบตามจำนวนจริง จึงหยุดการโหลดและส่งออก');
     }
     return data.records.map(row => this.unpack(row));
+  }
+  async formSettings() {
+    const {data, error} = await this.client.from('monitor_form_settings').select('revision,sections').eq('id', 1).single();
+    this.check(error);
+    return data;
+  }
+  async saveFormSettings(revision, sections) {
+    const {data, error} = await this.client.from('monitor_form_settings').update({sections})
+      .eq('id', 1).eq('revision', revision).select('revision,sections').maybeSingle();
+    this.check(error);
+    return data;
   }
   async complete(payload) {
     const {data,error} = await this.client.rpc('monitor_confirmed_payload_complete',{p:payload});
@@ -863,7 +936,7 @@ function readForm() {
     adjustStatus: adjustStatus.get()[0] || '', adjustNote: val('adjust-note'),
     adjustments: adjustStatus.get()[0] === 'มีการแก้ยอด' ? adjustments.map(item => item.get()) : [],
     factors: factors.get(), factorNote: val('factor-note'), issues: issues.get(), issuePmas: issues.get().includes(NO_ISSUES) ? [] : issuePmas.get(),
-    issueNote: val('issue-note'), summaryEdited, summary: $('summary').value
+    issueNote: val('issue-note'), additionalSections: readAdditionalSections(), summaryEdited, summary: $('summary').value
   };
 }
 
@@ -942,6 +1015,13 @@ function loadForm(record = null, readOnly = false) {
   form.reset();
   clearFormValidity();
   const data = record || {};
+  const zone = $('zone');
+  zone.querySelector('[data-legacy-zone]')?.remove();
+  if (data.zone && !Array.from(zone.options).some(option => option.value === data.zone)) {
+    const legacyZone = new Option(data.zone + ' (ข้อมูลเดิม)', data.zone);
+    legacyZone.dataset.legacyZone = '';
+    zone.add(legacyZone);
+  }
   const mapping = {
     'store-id':'storeId', 'store-name':'storeName', zone:'zone', monitor:'monitor', profile:'profile',
     'profile-other':'profileOther', role:'role', 'role-other':'roleOther', smart:'smart', frequency:'frequency', kudsan:'kudsan',
@@ -987,6 +1067,8 @@ function loadForm(record = null, readOnly = false) {
   updateConditionalFields();
   ensureAdjustment();
   ensureRegister();
+  if (record) renderAdditionalSections(validAdditionalSections(record.additionalSections), readOnly);
+  else renderAdditionalSections(sharedForm.sections, false, sharedForm.revision);
   summaryEdited = Boolean(data.summaryEdited);
   $('summary').value = data.summary || '';
   renderSummary();
@@ -1065,9 +1147,10 @@ function showMissingField(input) {
   for (let parent=input.parentElement; parent; parent=parent.parentElement) {
     if (parent.tagName === 'DETAILS') parent.open = true;
   }
-  input.setCustomValidity('กรุณากรอกข้อมูลในช่องนี้');
+  const message = input.validity.customError ? input.validationMessage : 'กรุณากรอกข้อมูลในช่องนี้';
+  input.setCustomValidity(message);
   input.setAttribute('aria-invalid','true');
-  notice('กรุณากรอกข้อมูลในช่องนี้');
+  notice(message);
   input.scrollIntoView?.({behavior:'smooth',block:'center'});
   input.focus({preventScroll:true});
   input.reportValidity();
@@ -1083,9 +1166,11 @@ function validateVisit() {
     if (first && !valid) first.setCustomValidity('กรุณากรอกข้อมูลในช่องนี้');
   };
   requireGroup($('weekdays'),weekdays.get().length > 0);
-  requireGroup($('factors'),factors.get().length > 0);
-  requireGroup($('issues'),issues.get().length > 0);
-  requireGroup($('issue-pmas'),!issues.get().some(value => value !== NO_ISSUES) || issuePmas.get().length > 0);
+  for (const [choices, note] of [[factors, $('factor-note')], [issues, $('issue-note')]]) {
+    if (!choices.get().length && !note.value.trim()) {
+      note.setCustomValidity('กรุณาเลือกอย่างน้อย 1 ข้อ หรือพิมพ์รายละเอียด');
+    }
+  }
   for (const item of registerItems) {
     item.productCode.required = false; item.productName.required = false;
     if (registerTypeValue() === 'จัดเรียงหลายชั้นวาง') {
@@ -1158,14 +1243,7 @@ function statusLabel(record) {
   return record.draft ? 'ฉบับร่าง' : 'บันทึกแล้ว';
 }
 
-function renderZoneOptions() {
-  const zones = [...new Set(records.map(record => typeof record.zone === 'string' ? record.zone.trim() : '').filter(Boolean))];
-  zones.sort((a, b) => a.localeCompare(b, 'th'));
-  $('zone-options').replaceChildren(...zones.map(zone => new Option(zone, zone)));
-}
-
 function renderDashboard() {
-  renderZoneOptions();
   const complete = records.filter(record => !record.draft);
   $('stat-visits').textContent = complete.length;
   $('stat-stores').textContent = new Set(complete.map(record => record.storeId.toLowerCase())).size;
@@ -1187,10 +1265,12 @@ function renderHistory() {
   renderHistoryScope();
   const query = $('history-search').value.toLowerCase().trim();
   const direction = $('history-direction').value;
-  const filtered = Boolean(query || direction || historyStoreFilter);
+  const zone = $('history-zone').value;
+  const filtered = Boolean(query || direction || zone || historyStoreFilter);
   const matching = [...records].sort((a, b) => (b.date || '').localeCompare(a.date || '') ||
     (b.updatedAt || '').localeCompare(a.updatedAt || '')).filter(record => {
       if (historyStoreFilter && normalizeStoreId(record.storeId) !== historyStoreFilter.key) return false;
+      if (zone && String(record.zone || '').trim().toUpperCase() !== zone) return false;
       if (![record.storeId, record.storeName, record.monitor].join(' ').toLowerCase().includes(query)) return false;
       const changes = relatedAdjustments(record).filter(item => DIRECTIONS.includes(item.direction));
       return direction === 'none' ? !changes.length : !direction || changes.some(item => item.direction === direction);
@@ -1309,6 +1389,11 @@ $('back-history').addEventListener('click', () => {
   showView(true);
 });
 $('nav-history').addEventListener('click', () => showView(true));
+$('open-store-history').addEventListener('click', () => {
+  clearHistoryFilters();
+  renderHistory();
+  showView(true);
+});
 $('history-search').addEventListener('input', renderHistory);
 // PMA search is available inside the summary window.
 const normalizeStoreId = value => String(value || '').trim().toLowerCase();
@@ -1341,6 +1426,7 @@ function clearHistoryFilters() {
   historyStoreFilter = null;
   $('history-search').value = '';
   $('history-direction').value = '';
+  $('history-zone').value = '';
 }
 function renderHistoryScope() {
   $('history-store-scope').hidden = !historyStoreFilter;
@@ -1502,6 +1588,8 @@ $('back-pma-overview').addEventListener('click', () => {
   $('pma-summary-search').focus({preventScroll:true});
 });
 $('history-direction').addEventListener('change', renderHistory);
+$('history-zone').append(...Array.from($('zone').querySelectorAll('optgroup'), group => group.cloneNode(true)));
+$('history-zone').addEventListener('change', renderHistory);
 $('clear-store-filter').addEventListener('click', () => {historyStoreFilter = null;renderHistory();});
 
 $('new-visit').addEventListener('click', () => {
@@ -1644,41 +1732,65 @@ function zip(entries) {
 }
 
 function makeWorkbook(saved) {
-  const base = ['วันและเวลาเข้าตรวจ','รหัสสาขา','ชื่อสาขา','โซน'];
-  const visits = [[...base, 'ร้าน Kudsan','การ Register','รายละเอียด Register','หมายเหตุการ Register','STORE HUB','ส่งตามรอบ','หมายเหตุ STORE HUB','Vending (จำนวนเครื่อง)',
-    'โปรไฟล์ร้าน','วันขายดี','ผู้เข้าตรวจ','ตำแหน่งผู้สั่งสินค้า',
-    'การใช้ New Smart Assortment','ความถี่ในการใช้งาน','PMA ที่ตรวจ (ข้อมูลเดิม)','ความเหมาะสมของการสั่ง AI',
-    'เหตุผลความเหมาะสม','พฤติกรรมการสั่ง','หมายเหตุการแก้ยอด','พฤติกรรมเดิมในการสั่งสินค้าของร้าน','รายละเอียดปัจจัยเดิมในการสั่งสินค้า Dry',
-    'ปัญหาที่พบ','PMA ที่พบปัญหา','รายละเอียดปัญหา','ประเภทสรุป','สรุปข้อค้นพบ']];
-  const details = [[...base,'รหัส PMA','ชื่อ PMA','PMA ที่ตรวจ (ข้อมูลเดิม)','มีการเพิ่มยอด','มีการลดยอด','ระบุว่าพบปัญหา','รายละเอียดการแก้ยอด','รายละเอียด Register']];
+  const base = ['วันและเวลาเข้าตรวจ','รหัสสาขา','ชื่อสาขา','โซน','สถานะการบันทึก'];
+  const baseWidths = [24,15,25,16,19];
+  const sheets = [];
+  const addSheet = (name, headers, widths) => {
+    const rows = [[...base, ...headers]];
+    sheets.push({name, rows, widths:[...baseWidths, ...widths]});
+    return rows;
+  };
+  const visits = addSheet('การเข้าตรวจ', ['ผู้เข้าตรวจ','โปรไฟล์ร้าน','วันขายดี','ตำแหน่งผู้สั่งสินค้า',
+    'การใช้ New Smart Assortment','ความถี่ในการใช้งาน','ความเหมาะสมของการสั่ง AI','เหตุผลความเหมาะสม',
+    'สถานะการแก้ยอด','หมายเหตุการแก้ยอด','ประเภทสรุป','สรุปข้อค้นพบ'],
+    [24,24,26,26,29,25,29,50,22,48,23,72]);
+  const stores = addSheet('ข้อมูลร้านและ Register', ['ร้าน Kudsan','การ Register','รายละเอียด Register','หมายเหตุการ Register',
+    'STORE HUB','ส่งตามรอบ','หมายเหตุ STORE HUB','Vending (จำนวนเครื่อง)'], [20,26,70,48,19,21,45,24]);
+  const adjustments = addSheet('รายการแก้ยอด', ['ลำดับรายการ','รหัส PMA','ชื่อ PMA','เพิ่มหรือลด','เหตุผลที่เลือก','เหตุผลที่พิมพ์'],
+    [16,15,34,17,52,56]);
+  const factors = addSheet('ปัจจัยการสั่งเดิม', ['ปัจจัยที่เลือก','รายละเอียดที่พิมพ์'], [46,70]);
+  const additional = addSheet('หัวข้อเพิ่มเติม', ['หัวข้อหลัก','หัวข้อย่อย','คำตอบ'], [38,45,70]);
+  const issues = addSheet('ปัญหาที่พบ', ['ประเภทที่เลือก','รายละเอียดที่พิมพ์','PMA ที่พบปัญหา'], [52,70,40]);
+  const details = addSheet('PMA และการแก้ยอด', ['รหัส PMA','ชื่อ PMA','PMA ที่ตรวจ (ข้อมูลเดิม)','มีการเพิ่มยอด',
+    'มีการลดยอด','ระบุว่าพบปัญหา','รายละเอียดการแก้ยอด','รายละเอียด Register'], [15,36,25,18,18,23,65,65]);
   const flag = value => value ? 'ใช่' : '';
   const uniqueLines = values => [...new Set(values.filter(Boolean))].join('\n');
-  for (const record of saved) {
-    const key = [visitDateLabel(record), record.storeId, record.storeName, record.zone || ''];
+  const ordered = [...saved].sort((a, b) => normalizeStoreId(a.storeId).localeCompare(normalizeStoreId(b.storeId), 'th', {numeric:true}) ||
+    visitDateLabel(b).localeCompare(visitDateLabel(a)));
+  for (const record of ordered) {
+    const key = [visitDateLabel(record), record.storeId, record.storeName, record.zone || '', statusLabel(record)];
     const registered = record.registerItems || [];
-    visits.push([...key, record.kudsan || '', record.registerType || '', uniqueLines(registered.map(registerDetail)),record.registerNote || '',
-      record.storeHub || '',record.hubSchedule || '',record.hubNote || '',record.vending ?? '',
-      withOther(record.profile, record.profileOther), record.weekdays.join(', '), record.monitor,
-      withOther(record.role, record.roleOther), record.smart, record.frequency, (record.pmas || []).map(pmaLabel).join(', '),
-      record.fit, record.fitNote, record.adjustStatus, record.adjustNote, record.factors.join(', '),
-      record.factorNote, record.issues.join(', '), record.issuePmas.map(pmaLabel).join(', '), record.issueNote,
-      record.summaryEdited ? 'แก้ไขด้วยตนเอง' : 'อัตโนมัติ', record.summary]);
+    const changes = record.adjustments || [];
+    const issuePmas = record.issuePmas || [];
+    visits.push([...key, record.monitor, withOther(record.profile, record.profileOther), record.weekdays.join(', '),
+      withOther(record.role, record.roleOther), record.smart, record.frequency, record.fit, record.fitNote,
+      record.adjustStatus, record.adjustNote, record.summaryEdited ? 'แก้ไขด้วยตนเอง' : 'อัตโนมัติ', record.summary]);
+    stores.push([...key, record.kudsan || '', record.registerType || '', uniqueLines(registered.map(registerDetail)), record.registerNote || '',
+      record.storeHub || '', record.hubSchedule || '', record.hubNote || '', record.vending ?? '']);
+    factors.push([...key, record.factors.join(', '), record.factorNote]);
+    for (const section of validAdditionalSections(record.additionalSections)) {
+      if (!section.questions.length) additional.push([...key, section.title, '', section.answer]);
+      for (const question of section.questions) additional.push([...key, section.title, question.title, question.answer]);
+    }
+    issues.push([...key, record.issues.join(', '), record.issueNote, issuePmas.map(pmaLabel).join(', ')]);
+    changes.forEach((item, index) => {
+      for (const code of item.pmas.length ? item.pmas : ['']) {
+        const direction = {'เพิ่มยอด':'เพิ่ม', 'ลดยอด':'ลด'}[item.direction] || item.direction;
+        adjustments.push([...key, index + 1, code, PMA.get(code) || '', direction, item.reasons.join(', '), item.custom]);
+      }
+    });
     const codes = allPmas(record);
-    if (record.adjustments.some(item=>!item.pmas.length) || registered.some(item=>!item.pmas.length)) codes.push('');
+    if (changes.some(item => !item.pmas.length) || registered.some(item => !item.pmas.length)) codes.push('');
     for (const code of codes) {
-      const related = record.adjustments.filter(item=>code ? item.pmas.includes(code) : !item.pmas.length);
-      const registerRows = registered.filter(item=>code ? item.pmas.includes(code) : !item.pmas.length);
-      details.push([...key,code,PMA.get(code) || '',flag((record.pmas || []).includes(code)),
-        flag(related.some(item=>item.direction==='เพิ่มยอด')),flag(related.some(item=>item.direction==='ลดยอด')),flag(record.issuePmas.includes(code)),
-        uniqueLines(related.map(item=>[item.direction,item.reasons.join(', '),item.custom].filter(Boolean).join(' | '))),
+      const related = changes.filter(item => code ? item.pmas.includes(code) : !item.pmas.length);
+      const registerRows = registered.filter(item => code ? item.pmas.includes(code) : !item.pmas.length);
+      details.push([...key, code, PMA.get(code) || '', flag((record.pmas || []).includes(code)),
+        flag(related.some(item => item.direction === 'เพิ่มยอด')), flag(related.some(item => item.direction === 'ลดยอด')), flag(issuePmas.includes(code)),
+        uniqueLines(related.map(item => [item.direction,item.reasons.join(', '),item.custom].filter(Boolean).join(' | '))),
         uniqueLines(registerRows.map(registerDetail))]);
     }
   }
 
-  const sheets = [
-    {name:'การเข้าตรวจ', rows:visits, widths:[24,15,25,24,23,25,80,40,18,22,40,18,23,25,23,24,31,25,42,29,38,22,38,31,38,31,38,38,22,72]},
-    {name:'PMA และการแก้ยอด', rows:details, widths:[24,15,25,24,14,36,25,18,18,23,80,80]}
-  ];
   if (sheets.some(sheet => sheet.rows.length > 1048576)) throw new Error('ข้อมูลเกินจำนวนแถวสูงสุดของ Excel กรุณาติดต่อผู้ดูแล');
   const rel = (id, type, target) => '<Relationship Id="rId' + id + '" Type="' + relNS + '/' + type + '" Target="' + target + '"/>';
   const rels = content => xmlStart + '<Relationships xmlns="' + packageRelNS + '">' + content + '</Relationships>';
@@ -1766,6 +1878,211 @@ $('import-local').addEventListener('click', async () => {
 });
 
 
+const MAX_ADDITIONAL_SECTIONS = 10;
+const MAX_ADDITIONAL_QUESTIONS = 6;
+let sharedForm = {revision:0, sections:[]};
+let additionalSections = [];
+let displayedSharedRevision;
+
+function additionalAnswer(title, answer) {
+  const label = make('label', 'field');
+  const input = make('textarea');
+  input.maxLength = 1000;
+  input.value = answer || '';
+  label.append(make('span', 'field-label', title), input);
+  return {label, input};
+}
+
+function validAdditionalSections(value) {
+  if (!Array.isArray(value)) return [];
+  const valid = item => typeof item?.id === 'string' && typeof item.title === 'string';
+  const answerText = item => typeof item.answer === 'string' ? item.answer : '';
+  return value.slice(0, MAX_ADDITIONAL_SECTIONS).filter(item => valid(item) && Array.isArray(item.questions)).map(item => ({
+    id:item.id, title:item.title, answer:answerText(item),
+    questions:item.questions.slice(0, MAX_ADDITIONAL_QUESTIONS).filter(valid).map(question => ({
+      id:question.id, title:question.title, answer:answerText(question)
+    }))
+  }));
+}
+
+function renderAdditionalSections(sections, readOnly = false, sharedRevision) {
+  displayedSharedRevision = sharedRevision;
+  const list = $('additional-answer-list');
+  list.replaceChildren();
+  additionalSections = sections.map(section => {
+    const group = make('div', 'additional-section');
+    const questions = section.questions.map(question => {
+      const {label, input} = additionalAnswer(question.title, question.answer);
+      return {id:question.id, title:question.title, label, input};
+    });
+    let input;
+    if (questions.length) {
+      group.append(make('h4', '', section.title), ...questions.map(question => question.label));
+    } else {
+      const answer = additionalAnswer(section.title, section.answer);
+      group.append(answer.label);
+      input = answer.input;
+    }
+    list.append(group);
+    return {id:section.id, title:section.title, questions, input};
+  });
+  $('open-additional-editor').hidden = readOnly;
+  $('additional-load-status').hidden = readOnly;
+  $('additional-card').hidden = readOnly && sections.length === 0;
+}
+
+function readAdditionalSections() {
+  return additionalSections.map(section => ({
+    id:section.id,
+    title:section.title,
+    questions:section.questions.map(question => ({
+      id:question.id, title:question.title, answer:question.input.value.trim()
+    })),
+    ...(section.input ? {answer:section.input.value.trim()} : {})
+  }));
+}
+
+function receiveSharedForm(settings) {
+  if (settings.revision < sharedForm.revision) return;
+  sharedForm = settings;
+  const hasAnswers = additionalSections.some(section => section.input?.value.trim() ||
+    section.questions.some(question => question.input.value.trim()));
+  if (displayedSharedRevision !== settings.revision && !readOnlyView && !editing && !saving && !hasAnswers) {
+    renderAdditionalSections(settings.sections, false, settings.revision);
+  }
+  $('additional-load-status').textContent = '';
+}
+
+let sharedFormLoading = false;
+async function refreshSharedForm() {
+  if (!cloud.ready || sharedFormLoading) return;
+  sharedFormLoading = true;
+  try {
+    receiveSharedForm(await cloud.formSettings());
+  } catch (error) {
+    $('additional-load-status').textContent = 'โหลดหัวข้อเพิ่มเติมไม่สำเร็จ · เปิดหน้าจัดการหัวข้อเพื่อลองอีกครั้ง';
+  } finally {
+    sharedFormLoading = false;
+  }
+}
+
+let editorSections = [];
+let editorRevision = 0;
+let editorRequest = 0;
+let editorSaving = false;
+
+function editorTitleRow(label, value, remove) {
+  const row = make('div', 'additional-editor-row');
+  const field = make('label', 'field');
+  const input = make('input');
+  input.required = true;
+  input.maxLength = 120;
+  input.value = value;
+  input.addEventListener('input', () => input.setCustomValidity(''));
+  field.append(make('span', 'field-label', label), input);
+  const removeButton = recordButton('trash', 'ลบ', remove, true);
+  removeButton.setAttribute('aria-label', 'ลบ' + label);
+  row.append(field, removeButton);
+  return {row, input};
+}
+
+function editorAddQuestion(section, question = {id:crypto.randomUUID(), title:''}) {
+  const item = editorTitleRow('หัวข้อย่อย', question.title, () => {
+    section.questions.splice(section.questions.indexOf(item), 1);
+    item.row.remove();
+    section.addQuestion.disabled = false;
+    section.addQuestion.focus();
+  });
+  item.id = question.id;
+  section.questions.push(item);
+  section.questionList.append(item.row);
+  section.addQuestion.disabled = section.questions.length >= MAX_ADDITIONAL_QUESTIONS;
+  return item;
+}
+
+function editorAddSection(section = {id:crypto.randomUUID(), title:'', questions:[]}) {
+  const group = make('div', 'additional-editor-group');
+  const item = editorTitleRow('หัวข้อหลัก', section.title, () => {
+    editorSections.splice(editorSections.indexOf(item), 1);
+    group.remove();
+    $('add-additional-section').disabled = false;
+    $('add-additional-section').focus();
+  });
+  item.id = section.id;
+  item.questions = [];
+  item.questionList = make('div', 'additional-editor-questions');
+  item.addQuestion = recordButton('plus', 'เพิ่มหัวข้อย่อย', () => editorAddQuestion(item).input.focus());
+  group.append(item.row, item.questionList, item.addQuestion);
+  editorSections.push(item);
+  $('additional-editor-list').append(group);
+  $('add-additional-section').disabled = editorSections.length >= MAX_ADDITIONAL_SECTIONS;
+  section.questions.forEach(question => editorAddQuestion(item, question));
+  return item;
+}
+
+const additionalDialog = $('additional-dialog');
+$('open-additional-editor').addEventListener('click', async () => {
+  const request = ++editorRequest;
+  $('additional-editor').disabled = true;
+  $('additional-editor-list').replaceChildren();
+  $('additional-editor-status').textContent = 'กำลังโหลดหัวข้อที่ใช้ร่วมกัน…';
+  additionalDialog.showModal();
+  try {
+    const settings = await cloud.formSettings();
+    if (!additionalDialog.open || request !== editorRequest) return;
+    receiveSharedForm(settings);
+    editorRevision = settings.revision;
+    editorSections = [];
+    $('add-additional-section').disabled = false;
+    settings.sections.forEach(section => editorAddSection(section));
+    $('additional-editor-status').textContent = '';
+    $('additional-editor').disabled = false;
+    (editorSections[0]?.input || $('add-additional-section')).focus();
+  } catch (error) {
+    if (additionalDialog.open && request === editorRequest) {
+      $('additional-editor-status').textContent = 'โหลดหัวข้อไม่สำเร็จ กรุณาปิดแล้วเปิดหน้าต่างใหม่';
+    }
+  }
+});
+
+$('close-additional-editor').addEventListener('click', () => additionalDialog.close());
+additionalDialog.addEventListener('cancel', event => { if (editorSaving) event.preventDefault(); });
+$('add-additional-section').addEventListener('click', () => editorAddSection().input.focus());
+$('additional-editor-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (editorSaving || $('additional-editor').disabled) return;
+  const blank = editorSections.flatMap(section => [section, ...section.questions]).find(item => !item.input.value.trim());
+  if (blank) {
+    blank.input.setCustomValidity('กรุณาระบุชื่อหัวข้อ');
+    blank.input.reportValidity();
+    return;
+  }
+  const sections = editorSections.map(section => ({
+    id:section.id, title:section.input.value.trim(),
+    questions:section.questions.map(item => ({id:item.id, title:item.input.value.trim()}))
+  }));
+  editorSaving = true;
+  $('additional-editor').disabled = true;
+  $('close-additional-editor').disabled = true;
+  $('additional-editor-status').textContent = 'กำลังบันทึกหัวข้อ…';
+  try {
+    const saved = await cloud.saveFormSettings(editorRevision, sections);
+    if (!saved) {
+      $('additional-editor-status').textContent = 'มีการแก้ไขจากอีกเครื่องแล้ว กรุณาจดการเปลี่ยนแปลงของคุณ จากนั้นปิดและเปิดหน้าต่างเพื่อโหลดหัวข้อล่าสุด';
+      return;
+    }
+    receiveSharedForm(saved);
+    additionalDialog.close();
+    toast('บันทึกหัวข้อเพิ่มเติมสำหรับทุกเครื่องแล้ว');
+  } catch (error) {
+    $('additional-editor-status').textContent = 'บันทึกหัวข้อไม่สำเร็จ · ' + error.message;
+  } finally {
+    editorSaving = false;
+    $('additional-editor').disabled = false;
+    $('close-additional-editor').disabled = false;
+  }
+});
+
 async function initialize() {
   loadForm();
   renderDashboard();
@@ -1785,7 +2102,9 @@ async function initialize() {
   $('form-access').disabled = false;
   $('connection-state').textContent = 'กรอกและส่งออกได้ทันที';
   try { $('import-local').hidden = readRecords().length === 0; } catch {}
-  await refresh();
+  await Promise.all([refresh(), refreshSharedForm()]);
+  window.addEventListener('focus', () => { void refreshSharedForm(); });
+  setInterval(() => { if (!document.hidden) void refreshSharedForm(); }, 15000);
 }
 void initialize();
 
